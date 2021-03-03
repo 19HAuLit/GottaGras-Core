@@ -22,10 +22,9 @@ public class hubCommand implements CommandExecutor {
         if (commandSender instanceof Player)
         {
             Player player = (Player) commandSender;
-            if (player.getWorld() == main.hub)
+            if (player.getWorld() == main.hub())
             {
-                Location location = new Location(main.hub, main.hub_x, main.hub_y, main.hub_z);
-                player.teleport(location);
+                player.teleport(main.hub_location());
                 main.allClear(player);
                 player.sendMessage(main.prefix + main.teleport);
             }

@@ -1,0 +1,22 @@
+name: GottaGras-Core
+main: fr.gottagras.core.Main
+version: 0.1
+description: Plugin mini-jeux by 19HAuLit
+commands:
+  hub:
+    description: Commande permettant aux joueurs de retourner au spawn
+    permission: player.use
+    aliases: [spawn, l, lobby]
+  uhc:
+    description: Commande principal de l'uhc
+    permission: player.use
+permissions:
+  admin.use:
+    description: Permissions pour les Admins
+    default: op
+  host.use:
+    description: Permissions pour les Hosts
+    default: op
+  player.use:
+    description: Permissions de tous les joueurs
+    default: true
