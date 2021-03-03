@@ -1,0 +1,9 @@
+message:
+  prefix: "&3[&4GottaGras&5-&6Core&7]&8 "
+  no-perm: "Vous ne pouvez pas exécuter cette commande"
+  teleport: "Vous venez d'être téléporté(e) au hub"
+hub:
+  world: world
+  x: 0.5
+  y: 100
+  z: 0.5
