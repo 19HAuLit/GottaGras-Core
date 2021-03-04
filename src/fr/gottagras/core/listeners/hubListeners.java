@@ -1,7 +1,6 @@
 package fr.gottagras.core.listeners;
 
 import fr.gottagras.core.Main;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,7 +8,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.painting.PaintingBreakByEntityEvent;
-import org.bukkit.event.painting.PaintingBreakEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -29,9 +27,10 @@ public class hubListeners implements Listener
     public void onJoin(PlayerJoinEvent event)
     {
         Player player = event.getPlayer();
-        if (player.getWorld() == main.hub() && player.getGameMode() == GameMode.SURVIVAL)
+        if (player.getWorld() == main.hub())
         {
             main.allClear(player);
+            player.setGameMode(GameMode.SURVIVAL);
             player.teleport(main.hub_location());
         }
         return;

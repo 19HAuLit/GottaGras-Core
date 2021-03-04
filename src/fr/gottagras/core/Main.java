@@ -3,6 +3,7 @@ package fr.gottagras.core;
 import fr.gottagras.core.commands.hubCommand;
 import fr.gottagras.core.commands.uhcCommand;
 import fr.gottagras.core.listeners.hubListeners;
+import fr.gottagras.core.listeners.mainListeners;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -10,6 +11,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.Collection;
 
 public class Main extends JavaPlugin
@@ -21,6 +24,7 @@ public class Main extends JavaPlugin
         getCommand("hub").setExecutor(new hubCommand(this));
         getCommand("uhc").setExecutor(new uhcCommand(this));
         // Listeners
+        getServer().getPluginManager().registerEvents(new mainListeners(this), this);
         getServer().getPluginManager().registerEvents(new hubListeners(this), this);
         // GameRule hub
         hub().setAnimalSpawnLimit(0);
@@ -31,9 +35,17 @@ public class Main extends JavaPlugin
         saveDefaultConfig();
     }
 
+    @Override
+    public void onDisable()
+    {
+        unLoadWord(Bukkit.getWorld("uhc"));
+    }
+
     // Data
         // UHC
     public String uhc_state = "end";
+    public Player[] uhc_join_players;
+    public int uhc_number_join = 0;
         // MSG
     public String prefix = getConfig().getString("msg.prefix").replace("&", "§");
     public String no_perm = getConfig().getString("msg.no-perm").replace("&", "§");
@@ -84,5 +96,37 @@ public class Main extends JavaPlugin
         player.getInventory().setChestplate(air);
         player.getInventory().setLeggings(air);
         player.getInventory().setBoots(air);
+    }
+
+    public void unLoadWord(World world)
+    {
+        for(Player player : Bukkit.getOnlinePlayers())
+        {
+            if (player.getWorld() == world)
+            {
+                allClear(player);
+                player.teleport(hub_location());
+                player.sendMessage(prefix + teleport);
+            }
+        }
+        Bukkit.unloadWorld(world, true);
+        return;
+    }
+
+    public void fileDelete(File file)
+    {
+        File[] contents = file.listFiles();
+        if (contents != null)
+        {
+            for (File f : contents)
+            {
+                if (! Files.isSymbolicLink(f.toPath()))
+                {
+                    fileDelete(f);
+                }
+            }
+        }
+        file.delete();
+        return;
     }
 }
