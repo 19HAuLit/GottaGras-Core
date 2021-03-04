@@ -13,3 +13,11 @@ hub:
   x: 0.5
   y: 121
   z: 0.5
+uhc:
+  time:
+    invincible: 10
+    pvp: 20
+    border: 3600
+    meetup: 4800
+  scenario:
+    final-heal: true

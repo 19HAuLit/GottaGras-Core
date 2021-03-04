@@ -1,13 +1,16 @@
 package fr.gottagras.core.commands;
 
 import fr.gottagras.core.Main;
+import fr.gottagras.core.timers.uhcTimer;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
+import java.util.Random;
 
 public class uhcCommand implements CommandExecutor {
     private Main main;
@@ -18,6 +21,7 @@ public class uhcCommand implements CommandExecutor {
 
     private String help = "\n- New: Permet de creer une nouvelle partie d'UHC\n- Join: Permet de rejoindre une partie d'UHC\n- Quit: Permet de quitter une partie d'UHC\n- Start: Permet de commencer une partie d'UHC\n- End: Permet de finir une partie d'UHC";
     private String help_new = "\n/uhc new <arg1> <arg2>\n- arg1: [True/False], génerer une nouvelle map UHC\n- arg2: [seed], si vous voulez une seed custom mettez-la ici";
+    private Random random = new Random();
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings)
@@ -48,7 +52,8 @@ public class uhcCommand implements CommandExecutor {
                         // CHANGEMENT DE L'ETAT DE JEU
                         main.uhc_state = "new";
                         // Modif de variable
-                        main.uhc_join_players = new Player[9999];
+                        main.uhc_join_players = new Player[255];
+                        main.uhc_number_join = 0;
                         // CREATION DES MAPS DE L'UHC + LOAD
                         WorldCreator worldCreatorUHC = new WorldCreator("uhc");
                         if (strings.length > 1)
@@ -56,8 +61,6 @@ public class uhcCommand implements CommandExecutor {
                             if (strings[1].equalsIgnoreCase("false"))
                             {
                                 worldCreatorUHC.createWorld();
-                                player.teleport(new Location(Bukkit.getWorld("uhc"), 0, 100, 0));
-                                player.setGameMode(GameMode.SPECTATOR);
                                 break;
                             }
                         }
@@ -73,8 +76,6 @@ public class uhcCommand implements CommandExecutor {
                         main.fileDelete(uhcFile);
                         worldCreatorUHC.environment(World.Environment.NORMAL);
                         worldCreatorUHC.createWorld();
-                        player.teleport(new Location(Bukkit.getWorld("uhc"), 0, 100, 0));
-                        player.setGameMode(GameMode.SPECTATOR);
                     }
                     else commandSender.sendMessage(main.prefix + main.no_perm);
                     break;
@@ -134,8 +135,45 @@ public class uhcCommand implements CommandExecutor {
                 case "start":
                     if (player.isOp() && main.uhc_state.equals("new"))
                     {
+                        // ANNONCE
                         Bukkit.broadcastMessage(main.prefix + "L'UHC START !!!");
+                        // CHANGEMENT D'ETAT
                         main.uhc_state = "start";
+                        // SET WORLD BORDER
+                        World uhc = Bukkit.getWorld("uhc");
+                        WorldBorder border = uhc.getWorldBorder();
+                        border.setCenter(0, 0);
+                        border.setSize(main.uhc_number_join*200);
+                        border.setDamageAmount(1);
+                        border.setDamageBuffer(1);
+                        border.setWarningDistance(0);
+                        // GameRule
+                        uhc.setTime(0);
+                        uhc.setGameRuleValue("naturalRegeneration","false");
+                        // Teleportation des joueurs
+                        main.uhc_alive_players = new Player[255];
+                        main.uhc_number_alive = 0;
+                        for (Player playerToTp : main.uhc_join_players)
+                        {
+                            if (playerToTp != null)
+                            {
+                                if (playerToTp.isOnline())
+                                {
+                                    main.uhc_alive_players[main.uhc_number_alive] = playerToTp;
+                                    main.uhc_number_alive++;
+                                    main.allClear(playerToTp);
+                                    playerToTp.setGameMode(GameMode.SURVIVAL);
+                                    int map_size = (int) border.getSize();
+                                    int x = map_size/2-random.nextInt(map_size);
+                                    int z = map_size/2-random.nextInt(map_size);
+                                    Location location = new Location(Bukkit.getWorld("uhc"), x, 255, z);
+                                    playerToTp.teleport(location);
+                                    playerToTp.sendMessage(main.prefix + main.teleport);
+                                }
+                            }
+                        }
+                        // TIMER
+                        new uhcTimer(main).startTimer();
                     }
                     else commandSender.sendMessage(main.prefix + main.no_perm);
                     break;

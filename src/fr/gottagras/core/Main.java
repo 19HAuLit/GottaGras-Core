@@ -4,6 +4,7 @@ import fr.gottagras.core.commands.hubCommand;
 import fr.gottagras.core.commands.uhcCommand;
 import fr.gottagras.core.listeners.hubListeners;
 import fr.gottagras.core.listeners.mainListeners;
+import fr.gottagras.core.listeners.uhcListeners;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -26,6 +27,7 @@ public class Main extends JavaPlugin
         // Listeners
         getServer().getPluginManager().registerEvents(new mainListeners(this), this);
         getServer().getPluginManager().registerEvents(new hubListeners(this), this);
+        getServer().getPluginManager().registerEvents(new uhcListeners(this), this);
         // GameRule hub
         hub().setAnimalSpawnLimit(0);
         hub().setMonsterSpawnLimit(0);
@@ -46,6 +48,17 @@ public class Main extends JavaPlugin
     public String uhc_state = "end";
     public Player[] uhc_join_players;
     public int uhc_number_join = 0;
+    public int uhc_time = 0;
+    public Boolean uhc_timerOff = true;
+    public Player[] uhc_alive_players;
+    public int uhc_number_alive = 0;
+        // UHC.TIME
+    public int uhc_time_invincible = getConfig().getInt("uhc.time.invincible");
+    public int uhc_time_pvp = getConfig().getInt("uhc.time.pvp");
+    public int uhc_time_border = getConfig().getInt("uhc.time.border");
+    public int uhc_time_meetup = getConfig().getInt("uhc.time.meetup");
+        // UHC.SCENARIO
+    public Boolean uhc_scenario_finalheal = getConfig().getBoolean("uhc.scenario.final-heal");
         // MSG
     public String prefix = getConfig().getString("msg.prefix").replace("&", "§");
     public String no_perm = getConfig().getString("msg.no-perm").replace("&", "§");
