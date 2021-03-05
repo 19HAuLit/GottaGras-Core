@@ -1,12 +1,16 @@
 package fr.gottagras.core.listeners;
 
 import fr.gottagras.core.Main;
+import fr.gottagras.core.menus.hubMenu;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.painting.PaintingBreakByEntityEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -32,8 +36,23 @@ public class hubListeners implements Listener
             main.allClear(player);
             player.setGameMode(GameMode.SURVIVAL);
             player.teleport(main.hub_location());
+            player.getInventory().setItem(4, new hubMenu(main).navigator());
         }
-        return;
+    }
+
+    @EventHandler
+    public void onInteractInventory(InventoryClickEvent event)
+    {
+        Player player = (Player) event.getWhoClicked();
+        if (player.getWorld() == main.hub() && player.getGameMode() == GameMode.SURVIVAL)
+        {
+            event.setCancelled(true);
+            if (event.getCurrentItem().getType() == new hubMenu(main).uhc().getType())
+            {
+                player.performCommand("uhc join");
+                player.closeInventory();
+            }
+        }
     }
 
     @EventHandler
@@ -45,6 +64,10 @@ public class hubListeners implements Listener
             if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_BLOCK)
             {
                 event.setCancelled(true);
+            }
+            if (event.getItem().getType() == new hubMenu(main).navigator().getType())
+            {
+                player.openInventory(new hubMenu(main).menu());
             }
         }
     }
@@ -58,7 +81,6 @@ public class hubListeners implements Listener
             event.setCancelled(true);
             player.sendMessage(main.prefix + main.impossible);
         }
-        return;
     }
 
     @EventHandler
@@ -70,7 +92,6 @@ public class hubListeners implements Listener
             player.setSaturation(20);
             player.setFoodLevel(20);
         }
-        return;
     }
 
     @EventHandler
@@ -80,7 +101,6 @@ public class hubListeners implements Listener
         {
             event.setCancelled(true);
         }
-        return;
     }
 
     @EventHandler

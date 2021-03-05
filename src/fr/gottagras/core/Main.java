@@ -1,6 +1,7 @@
 package fr.gottagras.core;
 
 import fr.gottagras.core.commands.hubCommand;
+import fr.gottagras.core.commands.invseeCommand;
 import fr.gottagras.core.commands.uhcCommand;
 import fr.gottagras.core.listeners.hubListeners;
 import fr.gottagras.core.listeners.mainListeners;
@@ -26,6 +27,7 @@ public class Main extends JavaPlugin
         // Commands
         getCommand("hub").setExecutor(new hubCommand(this));
         getCommand("uhc").setExecutor(new uhcCommand(this));
+        getCommand("invsee").setExecutor(new invseeCommand(this));
         // Listeners
         getServer().getPluginManager().registerEvents(new mainListeners(this), this);
         getServer().getPluginManager().registerEvents(new hubListeners(this), this);
@@ -62,6 +64,7 @@ public class Main extends JavaPlugin
         return uhc_number_join*150;
     }
     public int uhc_final_map_size = 100;
+    public int uhc_number_revive = 9999;
         // UHC.TIME
     public int uhc_time_invincible = getConfig().getInt("uhc.time.invincible");
     public int uhc_time_pvp = getConfig().getInt("uhc.time.pvp");
@@ -80,6 +83,7 @@ public class Main extends JavaPlugin
     public String no_perm = getConfig().getString("msg.no-perm").replace("&", "§");
     public String teleport = getConfig().getString("msg.teleport").replace("&", "§");
     public String impossible = getConfig().getString("msg.impossible").replace("&", "§");
+    public String revive = getConfig().getString("msg.revive").replace("&", "§");
         // HUB
     public World hub ()
     {
@@ -118,6 +122,7 @@ public class Main extends JavaPlugin
         player.setSaturation(20);
         player.setFoodLevel(20);
         player.setLevel(0);
+        player.setExp(0);
         player.setGameMode(GameMode.SURVIVAL);
     }
 

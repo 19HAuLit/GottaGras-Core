@@ -1,6 +1,7 @@
 package fr.gottagras.core.commands;
 
 import fr.gottagras.core.Main;
+import fr.gottagras.core.menus.hubMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,6 +28,7 @@ public class hubCommand implements CommandExecutor {
                 player.teleport(main.hub_location());
                 main.allClear(player);
                 player.sendMessage(main.prefix + main.teleport);
+                player.getInventory().setItem(4, new hubMenu(main).navigator());
             }
             else if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
             {
@@ -45,6 +47,7 @@ public class hubCommand implements CommandExecutor {
                 player.teleport(main.hub_location());
                 main.allClear(player);
                 player.sendMessage(main.prefix + main.teleport);
+                player.getInventory().setItem(4, new hubMenu(main).navigator());
             }
             else
             {

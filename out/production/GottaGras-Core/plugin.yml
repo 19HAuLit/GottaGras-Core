@@ -10,6 +10,10 @@ commands:
   uhc:
     description: Commande principal de l'uhc
     permission: player.use
+  invsee:
+    description: Commande pour regarder l'inventaire d'une joueur
+    permission: player.use
+    aliases: inv
 permissions:
   admin.use:
     description: Permissions pour les Admins

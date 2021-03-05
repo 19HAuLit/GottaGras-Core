@@ -7,6 +7,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
@@ -19,7 +21,7 @@ public class uhcCommand implements CommandExecutor {
         this.main = main;
     }
 
-    private String help = "\n- New: Permet de creer une nouvelle partie d'UHC\n- Join: Permet de rejoindre une partie d'UHC\n- Quit: Permet de quitter une partie d'UHC\n- Start: Permet de commencer une partie d'UHC\n- Spec: Permet de regarder la partie en cours\n- End: Permet de finir une partie d'UHC";
+    private String help = "\n- New: Permet de creer une nouvelle partie d'UHC\n- Join: Permet de rejoindre une partie d'UHC\n- Quit: Permet de quitter une partie d'UHC\n- Start: Permet de commencer une partie d'UHC\n- Spec: Permet de regarder la partie en cours\n- Revive: Permet de faire respawn un joueur\n- End: Permet de finir une partie d'UHC";
     private String help_new = "\n/uhc new <arg1> <arg2>\n- arg1: [True/False], génerer une nouvelle map UHC\n- arg2: [seed], si vous voulez une seed custom mettez-la ici";
     private Random random = new Random();
 
@@ -47,8 +49,6 @@ public class uhcCommand implements CommandExecutor {
                     }
                     if (player.isOp() && main.uhc_state.equals("end"))
                     {
-                        // ANNONCE
-                        Bukkit.broadcastMessage(main.prefix + "Un nouveau UHC viens d'etre creer ");
                         // CHANGEMENT DE L'ETAT DE JEU
                         main.uhc_state = "new";
                         // Modif de variable
@@ -85,6 +85,8 @@ public class uhcCommand implements CommandExecutor {
                         main.fileDelete(uhcNetherFile);
                         worldCreatorUHCNether.environment(World.Environment.NETHER);
                         worldCreatorUHCNether.createWorld();
+                        // ANNONCE
+                        Bukkit.broadcastMessage(main.prefix + "Un nouveau UHC viens d'etre creer ");
                     }
                     else commandSender.sendMessage(main.prefix + main.no_perm);
                     break;
@@ -171,7 +173,7 @@ public class uhcCommand implements CommandExecutor {
                         uhcNether.setGameRuleValue("naturalRegeneration","false");
                         uhc.setAutoSave(false);
                         // Teleportation des joueurs
-                        main.uhc_alive_players = new Player[255];
+                        main.uhc_alive_players = new Player[9999];
                         main.uhc_number_alive = 0;
                         for (Player playerToTp : main.uhc_join_players)
                         {
@@ -232,6 +234,58 @@ public class uhcCommand implements CommandExecutor {
                     }
                     else player.sendMessage(main.prefix + main.no_perm);
                     break;
+
+                // REVIVE
+                case "revive":
+                    if (strings.length > 1)
+                    {
+                        Player playerToRevive = null;
+                        Player playerRevive = null;
+                        if (main.uhc_alive_players != null)
+                        {
+                            for (Player playerAlive : main.uhc_alive_players)
+                            {
+                                if (playerAlive != null)
+                                {
+                                    if (playerAlive.getDisplayName().equalsIgnoreCase(strings[1]))
+                                    {
+                                        playerToRevive = playerAlive;
+                                    }
+                                }
+                            }
+                            for (Player playerOnline : Bukkit.getOnlinePlayers())
+                            {
+                                if (playerOnline.getDisplayName().equalsIgnoreCase(strings[1]) && playerOnline != playerToRevive)
+                                {
+                                    playerRevive = playerOnline;
+                                }
+                            }
+                        }
+                        if (playerRevive != null && player.isOp())
+                        {
+                            Location location = playerRevive.getLocation();
+                            if (strings.length > 2) {
+                                if (strings[2].equalsIgnoreCase("true")) {
+                                    int map_size = (int) Bukkit.getWorld("uhc").getWorldBorder().getSize();
+                                    int x = map_size / 2 - random.nextInt(map_size);
+                                    int z = map_size / 2 - random.nextInt(map_size);
+                                    location = new Location(Bukkit.getWorld("uhc"), x, 255, z);
+                                }
+                            }
+                            main.uhc_alive_players[main.uhc_number_revive - 1] = playerRevive;
+                            main.uhc_number_alive++;
+                            main.uhc_number_revive--;
+                            main.allClear(playerRevive);
+                            playerRevive.setGameMode(GameMode.SURVIVAL);
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 30*20, 255, true, false));
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 30*20, 255, true, false));
+                            player.teleport(location);
+                            Bukkit.broadcastMessage(main.prefix + "§6" + player.getDisplayName() + " §7" + main.revive);
+                        }
+                        else commandSender.sendMessage(main.prefix + main.impossible);
+                    }
+                    break;
+
                 // HELP
                 default:
                     commandSender.sendMessage(main.prefix + help);

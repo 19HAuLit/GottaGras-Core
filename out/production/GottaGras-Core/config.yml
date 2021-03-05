@@ -8,6 +8,7 @@ msg:
   no-perm: "Impossible d'executer cette commande"
   teleport: "Teleportation reussite"
   impossible: "Action impossible !"
+  revive: "viens d'etre revive"
 hub:
   world: world
   x: 0.5
