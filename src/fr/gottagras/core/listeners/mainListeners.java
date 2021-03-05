@@ -28,7 +28,11 @@ public class mainListeners implements Listener {
         {
             player.setAllowFlight(true);
         }
-        else player.setAllowFlight(false);
+        else
+        {
+            player.setAllowFlight(false);
+            player.setFlying(false);
+        }
     }
 
     @EventHandler

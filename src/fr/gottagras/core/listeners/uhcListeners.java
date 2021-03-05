@@ -98,14 +98,17 @@ public class uhcListeners implements Listener {
         {
             for (ItemStack itemStack : event.getInventory().getContents())
             {
-                if (main.uhc_scenario_hasteyboys)
+                if (itemStack != null)
                 {
-                    if (itemStack.getType() == Material.WOOD_PICKAXE || itemStack.getType() == Material.WOOD_AXE || itemStack.getType() == Material.STONE_PICKAXE || itemStack.getType() == Material.STONE_AXE || itemStack.getType() == Material.GOLD_PICKAXE || itemStack.getType() == Material.GOLD_AXE || itemStack.getType() == Material.IRON_PICKAXE || itemStack.getType() == Material.IRON_AXE || itemStack.getType() == Material.DIAMOND_PICKAXE || itemStack.getType() == Material.DIAMOND_AXE)
+                    if (main.uhc_scenario_hasteyboys)
                     {
-                        ItemMeta itemMeta = itemStack.getItemMeta();
-                        itemMeta.addEnchant(Enchantment.DIG_SPEED, 3, true);
-                        itemMeta.spigot().setUnbreakable(true);
-                        itemStack.setItemMeta(itemMeta);
+                        if (itemStack.getType() == Material.WOOD_PICKAXE || itemStack.getType() == Material.WOOD_AXE || itemStack.getType() == Material.STONE_PICKAXE || itemStack.getType() == Material.STONE_AXE || itemStack.getType() == Material.GOLD_PICKAXE || itemStack.getType() == Material.GOLD_AXE || itemStack.getType() == Material.IRON_PICKAXE || itemStack.getType() == Material.IRON_AXE || itemStack.getType() == Material.DIAMOND_PICKAXE || itemStack.getType() == Material.DIAMOND_AXE)
+                        {
+                            ItemMeta itemMeta = itemStack.getItemMeta();
+                            itemMeta.addEnchant(Enchantment.DIG_SPEED, 3, true);
+                            itemMeta.spigot().setUnbreakable(true);
+                            itemStack.setItemMeta(itemMeta);
+                        }
                     }
                 }
             }
@@ -118,14 +121,20 @@ public class uhcListeners implements Listener {
         Player player = event.getPlayer();
         if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
         {
+            int i = 0;
             boolean isOut = true;
             for (Player joinPlayer : main.uhc_alive_players)
             {
-                if (joinPlayer == player)
+                if (joinPlayer != null)
                 {
-                    main.uhc_number_alive++;
-                    isOut = false;
+                    if (joinPlayer.getDisplayName().equals(player.getDisplayName()))
+                    {
+                        main.uhc_alive_players[i] = player;
+                        main.uhc_number_alive++;
+                        isOut = false;
+                    }
                 }
+                i++;
             }
             if (isOut) player.setGameMode(GameMode.SPECTATOR);
         }
@@ -174,29 +183,32 @@ public class uhcListeners implements Listener {
     @EventHandler
     public void onDamageByEntity(EntityDamageByEntityEvent event)
     {
-        if (event.getEntity() instanceof Player)
+        if (event.getDamager() instanceof Player)
         {
-            Player player = ((Player) event.getEntity()).getPlayer();
-            if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
+            if (event.getEntity() instanceof Player)
             {
-                if (main.uhc_state.equalsIgnoreCase("begin"))
+                Player player = ((Player) event.getEntity()).getPlayer();
+                if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
                 {
-                    event.setCancelled(true);
-                }
-                else if (event.getDamager() instanceof Player)
-                {
-                    lastDamager = (Player) event.getDamager();
-                    lastPvPDamaged = player;
-                    date = new Date();
-                }
-                else if (event.getDamager() instanceof Projectile)
-                {
-                    Projectile projectile = (Projectile) event.getDamager();
-                    if (projectile.getShooter() instanceof Player)
+                    if (main.uhc_state.equalsIgnoreCase("begin"))
                     {
-                        lastDamager = (Player) projectile.getShooter();
+                        event.setCancelled(true);
+                    }
+                    else if (event.getDamager() instanceof Player)
+                    {
+                        lastDamager = (Player) event.getDamager();
                         lastPvPDamaged = player;
                         date = new Date();
+                    }
+                    else if (event.getDamager() instanceof Projectile)
+                    {
+                        Projectile projectile = (Projectile) event.getDamager();
+                        if (projectile.getShooter() instanceof Player)
+                        {
+                            lastDamager = (Player) projectile.getShooter();
+                            lastPvPDamaged = player;
+                            date = new Date();
+                        }
                     }
                 }
             }

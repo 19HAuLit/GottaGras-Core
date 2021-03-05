@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
@@ -24,6 +25,16 @@ public class uhcCommand implements CommandExecutor {
     private String help = "\n- New: Permet de creer une nouvelle partie d'UHC\n- Join: Permet de rejoindre une partie d'UHC\n- Quit: Permet de quitter une partie d'UHC\n- Start: Permet de commencer une partie d'UHC\n- Spec: Permet de regarder la partie en cours\n- Revive: Permet de faire respawn un joueur\n- End: Permet de finir une partie d'UHC";
     private String help_new = "\n/uhc new <arg1> <arg2>\n- arg1: [True/False], génerer une nouvelle map UHC\n- arg2: [seed], si vous voulez une seed custom mettez-la ici";
     private Random random = new Random();
+
+    public void giveStuffUHC(Player player)
+    {
+        ItemStack pickaxe = new ItemStack(Material.STONE_PICKAXE);
+        ItemStack axe = new ItemStack(Material.STONE_AXE);
+        ItemStack beef = new ItemStack(Material.COOKED_BEEF, 64);
+        ItemStack book = new ItemStack(Material.BOOK, 6);
+
+        player.getInventory().addItem(pickaxe, axe, beef, book);
+    }
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings)
@@ -173,7 +184,7 @@ public class uhcCommand implements CommandExecutor {
                         uhcNether.setGameRuleValue("naturalRegeneration","false");
                         uhc.setAutoSave(false);
                         // Teleportation des joueurs
-                        main.uhc_alive_players = new Player[9999];
+                        main.uhc_alive_players = new Player[255];
                         main.uhc_number_alive = 0;
                         for (Player playerToTp : main.uhc_join_players)
                         {
@@ -191,6 +202,7 @@ public class uhcCommand implements CommandExecutor {
                                     Location location = new Location(Bukkit.getWorld("uhc"), x, 255, z);
                                     playerToTp.teleport(location);
                                     playerToTp.sendMessage(main.prefix + main.teleport);
+                                    giveStuffUHC(playerToTp);
                                 }
                             }
                         }
@@ -263,7 +275,7 @@ public class uhcCommand implements CommandExecutor {
                         }
                         if (playerRevive != null && player.isOp())
                         {
-                            Location location = playerRevive.getLocation();
+                            Location location = new Location(Bukkit.getWorld("uhc"), playerRevive.getLocation().getX(), player.getLocation().getY(), playerRevive.getLocation().getZ());
                             if (strings.length > 2) {
                                 if (strings[2].equalsIgnoreCase("true")) {
                                     int map_size = (int) Bukkit.getWorld("uhc").getWorldBorder().getSize();
@@ -277,10 +289,11 @@ public class uhcCommand implements CommandExecutor {
                             main.uhc_number_revive--;
                             main.allClear(playerRevive);
                             playerRevive.setGameMode(GameMode.SURVIVAL);
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 30*20, 255, true, false));
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 30*20, 255, true, false));
-                            player.teleport(location);
-                            Bukkit.broadcastMessage(main.prefix + "§6" + player.getDisplayName() + " §7" + main.revive);
+                            playerRevive.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 30*20, 255, true, false));
+                            playerRevive.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 30*20, 255, true, false));
+                            playerRevive.teleport(location);
+                            giveStuffUHC(playerRevive);
+                            Bukkit.broadcastMessage(main.prefix + "§6" + playerRevive.getDisplayName() + " §7" + main.revive);
                         }
                         else commandSender.sendMessage(main.prefix + main.impossible);
                     }

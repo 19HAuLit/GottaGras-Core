@@ -4,7 +4,9 @@ import fr.gottagras.core.Main;
 import fr.gottagras.core.menus.hubMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.WeatherType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Weather;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -16,6 +18,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
+import org.bukkit.event.weather.WeatherEvent;
 
 public class hubListeners implements Listener
 {
@@ -27,6 +31,13 @@ public class hubListeners implements Listener
     }
 
     // Events
+
+    @EventHandler
+    public void onWeather(WeatherChangeEvent event)
+    {
+        if (Bukkit.getWorld("world") == event.getWorld()) event.setCancelled(true);
+    }
+
     @EventHandler
     public void onJoin(PlayerJoinEvent event)
     {
@@ -47,10 +58,12 @@ public class hubListeners implements Listener
         if (player.getWorld() == main.hub() && player.getGameMode() == GameMode.SURVIVAL)
         {
             event.setCancelled(true);
-            if (event.getCurrentItem().getType() == new hubMenu(main).uhc().getType())
+            if (event.getCurrentItem() != null)
             {
-                player.performCommand("uhc join");
-                player.closeInventory();
+                if (event.getCurrentItem().getType() == new hubMenu(main).uhc().getType())
+                {
+                    player.performCommand("uhc join");
+                }
             }
         }
     }
@@ -65,9 +78,12 @@ public class hubListeners implements Listener
             {
                 event.setCancelled(true);
             }
-            if (event.getItem().getType() == new hubMenu(main).navigator().getType())
+            if (event.getItem() != null)
             {
-                player.openInventory(new hubMenu(main).menu());
+                if (event.getItem().getType() == new hubMenu(main).navigator().getType())
+                {
+                    player.openInventory(new hubMenu(main).menu());
+                }
             }
         }
     }
