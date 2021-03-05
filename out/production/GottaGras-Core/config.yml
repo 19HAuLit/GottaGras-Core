@@ -15,9 +15,15 @@ hub:
   z: 0.5
 uhc:
   time:
-    invincible: 10
-    pvp: 20
-    border: 3600
-    meetup: 4800
+    invincible: 30
+    pvp: 60
+    border: 120
+    meetup: 240
   scenario:
+    nether: true
     final-heal: true
+    alltreedrop: true
+    alltreedrop-rate: 5
+    fireless: true
+    cutclean: true
+    hasteyboys: true

@@ -2,7 +2,6 @@ package fr.gottagras.core.commands;
 
 import fr.gottagras.core.Main;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -42,16 +41,7 @@ public class hubCommand implements CommandExecutor {
                     i++;
                 }
                 // CHECK WIN
-                if (main.uhc_number_alive == 1)
-                {
-                    for (Player alive : main.uhc_alive_players)
-                    {
-                        if (alive != null)
-                        {
-                            Bukkit.broadcastMessage(main.prefix + alive.getDisplayName() + " §9a gagné l'UHC, GG!");
-                        }
-                    }
-                }
+                main.checkWinUhc();
                 player.teleport(main.hub_location());
                 main.allClear(player);
                 player.sendMessage(main.prefix + main.teleport);

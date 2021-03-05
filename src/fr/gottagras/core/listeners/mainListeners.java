@@ -1,10 +1,12 @@
 package fr.gottagras.core.listeners;
 
 import fr.gottagras.core.Main;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 
@@ -13,6 +15,17 @@ public class mainListeners implements Listener {
     public mainListeners(Main main)
     {
         this.main = main;
+    }
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent event)
+    {
+        Player player = event.getPlayer();
+        if (player.getGameMode() == GameMode.SPECTATOR || player.getGameMode() == GameMode.CREATIVE || player.getWorld() == main.hub())
+        {
+            player.setAllowFlight(true);
+        }
+        else player.setAllowFlight(false);
     }
 
     @EventHandler

@@ -5,6 +5,8 @@ import fr.gottagras.core.commands.uhcCommand;
 import fr.gottagras.core.listeners.hubListeners;
 import fr.gottagras.core.listeners.mainListeners;
 import fr.gottagras.core.listeners.uhcListeners;
+import fr.gottagras.core.scoreboards.hubScoreboard;
+import fr.gottagras.core.timers.hubTimer;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -35,12 +37,15 @@ public class Main extends JavaPlugin
         hub().setStorm(false);
         // Config
         saveDefaultConfig();
+        // SCOREBOARD
+        new hubTimer(this).startTimer();
     }
 
     @Override
     public void onDisable()
     {
         unLoadWord(Bukkit.getWorld("uhc"));
+        unLoadWord(Bukkit.getWorld("uhc_nether"));
     }
 
     // Data
@@ -52,13 +57,24 @@ public class Main extends JavaPlugin
     public Boolean uhc_timerOff = true;
     public Player[] uhc_alive_players;
     public int uhc_number_alive = 0;
+    public int uhc_initial_map_size()
+    {
+        return uhc_number_join*150;
+    }
+    public int uhc_final_map_size = 100;
         // UHC.TIME
     public int uhc_time_invincible = getConfig().getInt("uhc.time.invincible");
     public int uhc_time_pvp = getConfig().getInt("uhc.time.pvp");
     public int uhc_time_border = getConfig().getInt("uhc.time.border");
     public int uhc_time_meetup = getConfig().getInt("uhc.time.meetup");
         // UHC.SCENARIO
+    public Boolean uhc_scenario_nether = getConfig().getBoolean("uhc.scenario.nether");
     public Boolean uhc_scenario_finalheal = getConfig().getBoolean("uhc.scenario.final-heal");
+    public Boolean uhc_scenario_alltreedrop = getConfig().getBoolean("uhc.scenario.alltreedrop");
+    public int uhc_scenario_alltreedrop_rate = getConfig().getInt("uhc.scenario.alltreedrop-rate");
+    public Boolean uhc_scenario_fireless = getConfig().getBoolean("uhc.scenario.fireless");
+    public Boolean uhc_scenario_cutclean = getConfig().getBoolean("uhc.scenario.cutclean");
+    public Boolean uhc_scenario_hasteyboys = getConfig().getBoolean("uhc.scenario.hasteyboys");
         // MSG
     public String prefix = getConfig().getString("msg.prefix").replace("&", "§");
     public String no_perm = getConfig().getString("msg.no-perm").replace("&", "§");
@@ -78,6 +94,20 @@ public class Main extends JavaPlugin
     }
 
     // METHODS
+
+    public void checkWinUhc()
+    {
+        if (uhc_number_alive == 1)
+        {
+            for (Player alive : uhc_alive_players)
+            {
+                if (alive != null)
+                {
+                    Bukkit.broadcastMessage(prefix + alive.getDisplayName() + " §9a gagné l'UHC, GG!");
+                }
+            }
+        }
+    }
 
     public void allClear(Player player)
     {

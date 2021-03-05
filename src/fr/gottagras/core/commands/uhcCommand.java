@@ -19,7 +19,7 @@ public class uhcCommand implements CommandExecutor {
         this.main = main;
     }
 
-    private String help = "\n- New: Permet de creer une nouvelle partie d'UHC\n- Join: Permet de rejoindre une partie d'UHC\n- Quit: Permet de quitter une partie d'UHC\n- Start: Permet de commencer une partie d'UHC\n- End: Permet de finir une partie d'UHC";
+    private String help = "\n- New: Permet de creer une nouvelle partie d'UHC\n- Join: Permet de rejoindre une partie d'UHC\n- Quit: Permet de quitter une partie d'UHC\n- Start: Permet de commencer une partie d'UHC\n- Spec: Permet de regarder la partie en cours\n- End: Permet de finir une partie d'UHC";
     private String help_new = "\n/uhc new <arg1> <arg2>\n- arg1: [True/False], génerer une nouvelle map UHC\n- arg2: [seed], si vous voulez une seed custom mettez-la ici";
     private Random random = new Random();
 
@@ -56,11 +56,15 @@ public class uhcCommand implements CommandExecutor {
                         main.uhc_number_join = 0;
                         // CREATION DES MAPS DE L'UHC + LOAD
                         WorldCreator worldCreatorUHC = new WorldCreator("uhc");
+                        worldCreatorUHC.environment(World.Environment.NORMAL);
+                        WorldCreator worldCreatorUHCNether = new WorldCreator("uhc_nether");
+                        worldCreatorUHCNether.environment(World.Environment.NETHER);
                         if (strings.length > 1)
                         {
                             if (strings[1].equalsIgnoreCase("false"))
                             {
                                 worldCreatorUHC.createWorld();
+                                worldCreatorUHCNether.createWorld();
                                 break;
                             }
                         }
@@ -70,12 +74,17 @@ public class uhcCommand implements CommandExecutor {
                             {
                                 long seed = Long.parseLong(strings[2]);
                                 worldCreatorUHC.seed(seed);
+                                worldCreatorUHCNether.seed(seed);
                             }
                         }
                         File uhcFile = new File(System.getProperty("user.dir") + "\\uhc");
                         main.fileDelete(uhcFile);
                         worldCreatorUHC.environment(World.Environment.NORMAL);
                         worldCreatorUHC.createWorld();
+                        File uhcNetherFile = new File(System.getProperty("user.dir") + "\\uhc_nether");
+                        main.fileDelete(uhcNetherFile);
+                        worldCreatorUHCNether.environment(World.Environment.NETHER);
+                        worldCreatorUHCNether.createWorld();
                     }
                     else commandSender.sendMessage(main.prefix + main.no_perm);
                     break;
@@ -143,13 +152,24 @@ public class uhcCommand implements CommandExecutor {
                         World uhc = Bukkit.getWorld("uhc");
                         WorldBorder border = uhc.getWorldBorder();
                         border.setCenter(0, 0);
-                        border.setSize(main.uhc_number_join*200);
+                        border.setSize(main.uhc_initial_map_size());
                         border.setDamageAmount(1);
                         border.setDamageBuffer(1);
                         border.setWarningDistance(0);
+                        World uhcNether = Bukkit.getWorld("uhc_nether");
+                        WorldBorder borderNether = uhcNether.getWorldBorder();
+                        borderNether.setCenter(0, 0);
+                        borderNether.setSize(main.uhc_initial_map_size());
+                        borderNether.setDamageAmount(1);
+                        borderNether.setDamageBuffer(1);
+                        borderNether.setWarningDistance(0);
                         // GameRule
                         uhc.setTime(0);
                         uhc.setGameRuleValue("naturalRegeneration","false");
+                        uhc.setAutoSave(false);
+                        uhcNether.setTime(0);
+                        uhcNether.setGameRuleValue("naturalRegeneration","false");
+                        uhc.setAutoSave(false);
                         // Teleportation des joueurs
                         main.uhc_alive_players = new Player[255];
                         main.uhc_number_alive = 0;
@@ -188,10 +208,30 @@ public class uhcCommand implements CommandExecutor {
                         main.uhc_state = "end";
                         // UNLOAD
                         main.unLoadWord(Bukkit.getWorld("uhc"));
+                        main.unLoadWord(Bukkit.getWorld("uhc_nether"));
                     }
                     else commandSender.sendMessage(main.prefix + main.no_perm);
                     break;
 
+                // SPEC
+                case "spec":
+                    boolean isOut = true;
+                    if (main.uhc_number_alive > 0)
+                    {
+                        for (Player playerSpec : main.uhc_alive_players)
+                        {
+                            if (playerSpec == player) isOut = false;
+                        }
+                    }
+                    if (isOut && !main.uhc_state.equals("new") && !main.uhc_state.equals("end"))
+                    {
+                        main.allClear(player);
+                        player.setGameMode(GameMode.SPECTATOR);
+                        player.teleport(new Location(Bukkit.getWorld("uhc"), 0, 150, 0));
+                        player.sendMessage(main.prefix + main.teleport);
+                    }
+                    else player.sendMessage(main.prefix + main.no_perm);
+                    break;
                 // HELP
                 default:
                     commandSender.sendMessage(main.prefix + help);

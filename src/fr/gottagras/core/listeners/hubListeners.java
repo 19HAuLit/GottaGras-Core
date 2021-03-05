@@ -65,7 +65,7 @@ public class hubListeners implements Listener
     public void onMove(PlayerMoveEvent event)
     {
         Player player = event.getPlayer();
-        if (player.getWorld() == main.hub() && player.getGameMode() == GameMode.SURVIVAL)
+        if (player.getWorld() == main.hub())
         {
             player.setSaturation(20);
             player.setFoodLevel(20);
