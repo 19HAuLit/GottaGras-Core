@@ -71,6 +71,7 @@ public class Main extends JavaPlugin
     }
     public int uhc_final_map_size = 100;
     public int uhc_number_revive = 255;
+    public long seed = 123;
         // UHC.TIME
     public int uhc_time_invincible = getConfig().getInt("uhc.time.invincible");
     public int uhc_time_pvp = getConfig().getInt("uhc.time.pvp");

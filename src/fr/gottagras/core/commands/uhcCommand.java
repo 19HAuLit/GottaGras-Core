@@ -28,7 +28,6 @@ public class uhcCommand implements CommandExecutor {
     }
 
     private String help = "\n- New: Permet de creer une nouvelle partie d'UHC\n- Join: Permet de rejoindre une partie d'UHC\n- Quit: Permet de quitter une partie d'UHC\n- UHC: Permet de voir les paramètres de la partie\n- Start: Permet de commencer une partie d'UHC\n- Spec: Permet de regarder la partie en cours\n- Revive: Permet de faire respawn un joueur\n- End: Permet de finir une partie d'UHC";
-    private String help_new = "\n/uhc new <arg1>\n- arg1: [Seed/False], seed: choisir la seed de la map | false: ne pas generer de map";
     private Random random = new Random();
 
     public void giveStuffUHC(Player player)
@@ -135,14 +134,6 @@ public class uhcCommand implements CommandExecutor {
             {
                 // CREATION DE LA PARTIE
                 case "new":
-                    if (strings.length > 1)
-                    {
-                        if (strings[1].equalsIgnoreCase("help"))
-                        {
-                            commandSender.sendMessage(main.prefix + help_new);
-                            break;
-                        }
-                    }
                     if (player.isOp() && main.uhc_state.equals("end"))
                     {
                         // CHANGEMENT DE L'ETAT DE JEU
@@ -150,34 +141,35 @@ public class uhcCommand implements CommandExecutor {
                         // Modif de variable
                         main.uhc_join_players = new Player[255];
                         main.uhc_number_join = 0;
-                        // CREATION DES MAPS DE L'UHC + LOAD
-                        WorldCreator worldCreatorUHC = new WorldCreator("uhc");
-                        worldCreatorUHC.environment(World.Environment.NORMAL);
-                        WorldCreator worldCreatorUHCNether = new WorldCreator("uhc_nether");
-                        worldCreatorUHCNether.environment(World.Environment.NETHER);
                         if (strings.length > 1)
                         {
-                            if (strings[1].equalsIgnoreCase("false"))
-                            {
-                                worldCreatorUHC.createWorld();
-                                worldCreatorUHCNether.createWorld();
-                                break;
-                            }
-                            else
-                            {
-                                long seed = Long.parseLong(strings[1]);
-                                worldCreatorUHC.seed(seed);
-                                worldCreatorUHCNether.seed(seed);
-                            }
+                            // LOAD WORLD
+                            WorldCreator worldCreatorUHC = new WorldCreator("uhc");
+                            worldCreatorUHC.environment(World.Environment.NORMAL);
+                            WorldCreator worldCreatorUHCNether = new WorldCreator("uhc_nether");
+                            worldCreatorUHCNether.environment(World.Environment.NETHER);
+                            // SET SEED
+                            main.seed = Long.parseLong(strings[1]);
+                            // DELETE WORLD
+                            File uhcFile = new File(System.getProperty("user.dir") + "\\uhc");
+                            main.fileDelete(uhcFile);
+                            File uhcNetherFile = new File(System.getProperty("user.dir") + "\\uhc_nether");
+                            main.fileDelete(uhcNetherFile);
+                            // SEED WORLD
+                            worldCreatorUHC.seed(main.seed);
+                            worldCreatorUHCNether.seed(main.seed);
+                            // CREATION WORLD
+                            worldCreatorUHC.environment(World.Environment.NORMAL);
+                            worldCreatorUHCNether.environment(World.Environment.NETHER);
+                            worldCreatorUHC.createWorld();
+                            worldCreatorUHCNether.createWorld();
                         }
-                        File uhcFile = new File(System.getProperty("user.dir") + "\\uhc");
-                        main.fileDelete(uhcFile);
-                        worldCreatorUHC.environment(World.Environment.NORMAL);
-                        worldCreatorUHC.createWorld();
-                        File uhcNetherFile = new File(System.getProperty("user.dir") + "\\uhc_nether");
-                        main.fileDelete(uhcNetherFile);
-                        worldCreatorUHCNether.environment(World.Environment.NETHER);
-                        worldCreatorUHCNether.createWorld();
+                        else
+                        {
+                            Bukkit.createWorld(WorldCreator.name("uhc"));
+                            Bukkit.createWorld(WorldCreator.name("uhc_nether"));
+                        }
+
                         // ANNONCE
                         Bukkit.broadcastMessage(main.prefix + "Un nouveau UHC viens d'etre creer ");
                     }
