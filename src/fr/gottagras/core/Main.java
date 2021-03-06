@@ -7,6 +7,7 @@ import fr.gottagras.core.listeners.hubListeners;
 import fr.gottagras.core.listeners.mainListeners;
 import fr.gottagras.core.listeners.uhcListeners;
 import fr.gottagras.core.menus.hubMenu;
+import fr.gottagras.core.menus.uhcMenu;
 import fr.gottagras.core.scoreboards.hubScoreboard;
 import fr.gottagras.core.timers.hubTimer;
 import org.bukkit.*;
@@ -33,6 +34,7 @@ public class Main extends JavaPlugin
         getServer().getPluginManager().registerEvents(new mainListeners(this), this);
         getServer().getPluginManager().registerEvents(new hubListeners(this), this);
         getServer().getPluginManager().registerEvents(new uhcListeners(this), this);
+        getServer().getPluginManager().registerEvents(new uhcMenu(this), this);
         // GameRule hub
         hub().setAnimalSpawnLimit(0);
         hub().setMonsterSpawnLimit(0);
@@ -54,6 +56,7 @@ public class Main extends JavaPlugin
     // Data
         // UHC
     public String uhc_state = "end";
+    public String uhc_mode = "uhc";
     public Player[] uhc_join_players;
     public int uhc_number_join = 0;
     public int uhc_time = 0;
@@ -62,7 +65,8 @@ public class Main extends JavaPlugin
     public int uhc_number_alive = 0;
     public int uhc_initial_map_size()
     {
-        return uhc_number_join*150;
+        if (uhc_mode.equals("meetup")) return 300;
+        else return uhc_number_join*150;
     }
     public int uhc_final_map_size = 100;
     public int uhc_number_revive = 255;

@@ -62,7 +62,12 @@ public class hubListeners implements Listener
             {
                 if (event.getCurrentItem().getType() == new hubMenu(main).uhc().getType())
                 {
-                    player.performCommand("uhc join");
+                    if (main.uhc_state.equals("new")) player.performCommand("uhc join");
+                    else player.performCommand("uhc spec");
+                }
+                else if (event.getCurrentItem().getType() == new hubMenu(main).uhc_settings().getType())
+                {
+                    player.performCommand("uhc uhc");
                 }
             }
         }

@@ -3,6 +3,7 @@ package fr.gottagras.core.commands;
 import fr.gottagras.core.Main;
 import fr.gottagras.core.menus.hubMenu;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,18 +33,21 @@ public class hubCommand implements CommandExecutor {
             }
             else if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
             {
-                int i = 0;
-                for (Player alive : main.uhc_alive_players)
+                if (player.getGameMode() == GameMode.SURVIVAL)
                 {
-                    if (alive == player)
+                    int i = 0;
+                    for (Player alive : main.uhc_alive_players)
                     {
-                        main.uhc_number_alive--;
-                        main.uhc_alive_players[i] = null;
+                        if (alive == player)
+                        {
+                            main.uhc_number_alive--;
+                            main.uhc_alive_players[i] = null;
+                        }
+                        i++;
                     }
-                    i++;
+                    // CHECK WIN
+                    main.checkWinUhc();
                 }
-                // CHECK WIN
-                main.checkWinUhc();
                 player.teleport(main.hub_location());
                 main.allClear(player);
                 player.sendMessage(main.prefix + main.teleport);

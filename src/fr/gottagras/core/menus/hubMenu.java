@@ -16,8 +16,9 @@ public class hubMenu {
 
     public Inventory menu()
     {
-        Inventory inventory = Bukkit.createInventory(null, 9, "§4Menu");
+        Inventory inventory = Bukkit.createInventory(null, 18, "§4Menu");
         inventory.setItem(4, uhc());
+        inventory.setItem(13, uhc_settings());
         return inventory;
     }
 
@@ -35,6 +36,15 @@ public class hubMenu {
         ItemStack itemStack = new ItemStack(Material.GOLDEN_APPLE);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§6Join UHC");
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
+    public ItemStack uhc_settings()
+    {
+        ItemStack itemStack = new ItemStack(Material.REDSTONE_BLOCK);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName("§7UHC SETTINGS");
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }

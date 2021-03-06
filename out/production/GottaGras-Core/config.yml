@@ -17,9 +17,9 @@ hub:
 uhc:
   time:
     invincible: 30
-    pvp: 60
-    border: 120
-    meetup: 240
+    pvp: 1200
+    border: 3600
+    meetup: 4800
   scenario:
     nether: true
     final-heal: true
