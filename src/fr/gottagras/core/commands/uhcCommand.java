@@ -365,13 +365,15 @@ public class uhcCommand implements CommandExecutor {
                         }
                         if (playerRevive != null && player.isOp())
                         {
-                            Location location = new Location(Bukkit.getWorld("uhc"), playerRevive.getLocation().getX(), player.getLocation().getY(), playerRevive.getLocation().getZ());
-                            if (strings.length > 2) {
-                                if (strings[2].equalsIgnoreCase("true")) {
-                                    int map_size = (int) Bukkit.getWorld("uhc").getWorldBorder().getSize();
-                                    int x = map_size / 2 - random.nextInt(map_size);
-                                    int z = map_size / 2 - random.nextInt(map_size);
-                                    location = new Location(Bukkit.getWorld("uhc"), x, 255, z);
+                            int map_size = (int) Bukkit.getWorld("uhc").getWorldBorder().getSize();
+                            int x = map_size / 2 - random.nextInt(map_size);
+                            int z = map_size / 2 - random.nextInt(map_size);
+                            Location location = new Location(Bukkit.getWorld("uhc"), x, 255, z);
+                            if (strings.length > 2)
+                            {
+                                if (strings[2].equalsIgnoreCase("true"))
+                                {
+                                    location = playerRevive.getLocation();
                                 }
                             }
                             main.uhc_alive_players[main.uhc_number_revive - 1] = playerRevive;

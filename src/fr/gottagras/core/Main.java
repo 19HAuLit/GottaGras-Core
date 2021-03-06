@@ -66,7 +66,8 @@ public class Main extends JavaPlugin
     public int uhc_initial_map_size()
     {
         if (uhc_mode.equals("meetup")) return 300;
-        else return uhc_number_join*150;
+        else if (uhc_number_join < 20) return uhc_number_join*150;
+        else return 3000;
     }
     public int uhc_final_map_size = 100;
     public int uhc_number_revive = 255;

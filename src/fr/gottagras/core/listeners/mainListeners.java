@@ -3,6 +3,7 @@ package fr.gottagras.core.listeners;
 import fr.gottagras.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,6 +33,22 @@ public class mainListeners implements Listener {
         {
             player.setAllowFlight(false);
             player.setFlying(false);
+        }
+        // ANTI-LAG SPEC
+        if(player.getGameMode() == GameMode.SPECTATOR)
+        {
+            // PLAYER X et Z
+            double x = player.getLocation().getX();
+            double z = player.getLocation().getZ();
+            // BORDER CO
+            double borderXp = player.getWorld().getWorldBorder().getSize()/2 + player.getWorld().getWorldBorder().getCenter().getX();
+            double borderZp = player.getWorld().getWorldBorder().getSize()/2 + player.getWorld().getWorldBorder().getCenter().getZ();
+            double borderXn = 0 - player.getWorld().getWorldBorder().getSize()/2 + player.getWorld().getWorldBorder().getCenter().getX();
+            double borderZn = 0 - player.getWorld().getWorldBorder().getSize()/2 + player.getWorld().getWorldBorder().getCenter().getZ();
+            if (x > borderXp+32 || x < borderXn-32  || z > borderZp+32  || z < borderZn-32 )
+            {
+                player.teleport(new Location(player.getWorld(), player.getWorld().getWorldBorder().getCenter().getX(), 150, player.getWorld().getWorldBorder().getCenter().getZ()));
+            }
         }
     }
 
