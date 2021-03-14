@@ -141,13 +141,13 @@ public class uhcCommand implements CommandExecutor {
                         // Modif de variable
                         main.uhc_join_players = new Player[255];
                         main.uhc_number_join = 0;
+                        // LOAD WORLD
+                        WorldCreator worldCreatorUHC = new WorldCreator("uhc");
+                        worldCreatorUHC.environment(World.Environment.NORMAL);
+                        WorldCreator worldCreatorUHCNether = new WorldCreator("uhc_nether");
+                        worldCreatorUHCNether.environment(World.Environment.NETHER);
                         if (strings.length > 1)
                         {
-                            // LOAD WORLD
-                            WorldCreator worldCreatorUHC = new WorldCreator("uhc");
-                            worldCreatorUHC.environment(World.Environment.NORMAL);
-                            WorldCreator worldCreatorUHCNether = new WorldCreator("uhc_nether");
-                            worldCreatorUHCNether.environment(World.Environment.NETHER);
                             // SET SEED
                             main.seed = Long.parseLong(strings[1]);
                             // DELETE WORLD
@@ -161,13 +161,13 @@ public class uhcCommand implements CommandExecutor {
                             // CREATION WORLD
                             worldCreatorUHC.environment(World.Environment.NORMAL);
                             worldCreatorUHCNether.environment(World.Environment.NETHER);
-                            worldCreatorUHC.createWorld();
-                            worldCreatorUHCNether.createWorld();
+                            Bukkit.createWorld(worldCreatorUHC);
+                            Bukkit.createWorld(worldCreatorUHCNether);
                         }
                         else
                         {
-                            Bukkit.createWorld(WorldCreator.name("uhc"));
-                            Bukkit.createWorld(WorldCreator.name("uhc_nether"));
+                            Bukkit.createWorld(worldCreatorUHC);
+                            Bukkit.createWorld(worldCreatorUHCNether);
                         }
 
                         // ANNONCE

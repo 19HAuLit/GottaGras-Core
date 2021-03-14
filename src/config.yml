@@ -14,6 +14,17 @@ hub:
   x: 0.5
   y: 121
   z: 0.5
+jump:
+  world: world
+  x: 56.5
+  y: 18
+  z: -22.5
+  xp: 63
+  xn: -21
+  yp: 31
+  yn: 0
+  zp: 87
+  zn: -30
 uhc:
   time:
     invincible: 30

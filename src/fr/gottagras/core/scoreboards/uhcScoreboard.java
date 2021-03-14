@@ -16,6 +16,26 @@ public class uhcScoreboard {
     {
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         Scoreboard board = manager.getNewScoreboard();
+        player.setScoreboard(infos(board));
+        player.setScoreboard(health(board));
+    }
+
+    public Scoreboard health(Scoreboard board)
+    {
+        Objective objective = board.registerNewObjective("Health", "health");
+        objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+        objective.setDisplayName("HP");
+
+        for(Player online : Bukkit.getOnlinePlayers()){
+            Score score = objective.getScore(online);
+            score.setScore((int)online.getHealth());
+        }
+        return board;
+    }
+
+
+    public Scoreboard infos(Scoreboard board)
+    {
         Objective objective = board.registerNewObjective("GottaGras-UHC", "ScoreBoard");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         objective.setDisplayName(main.prefix);
@@ -34,6 +54,6 @@ public class uhcScoreboard {
         info_4.setScore(4);
         Score info_5 = objective.getScore("§6Temps§7: " + main.uhc_time/60 + " min " + main.uhc_time%60 + "s");
         info_5.setScore(5);
-        player.setScoreboard(board);
+        return board;
     }
 }

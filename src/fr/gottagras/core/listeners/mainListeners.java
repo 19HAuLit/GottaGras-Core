@@ -25,7 +25,22 @@ public class mainListeners implements Listener {
     public void onMove(PlayerMoveEvent event)
     {
         Player player = event.getPlayer();
-        if (player.getGameMode() == GameMode.SPECTATOR || player.getGameMode() == GameMode.CREATIVE || player.getWorld() == main.hub())
+        boolean allowFly = true;
+        double x = player.getLocation().getX();
+        double y = player.getLocation().getY();
+        double z = player.getLocation().getZ();
+        if (player.getWorld() == main.jump() && player.getGameMode() == GameMode.SURVIVAL)
+        {
+            if (x > main.jump_Xn && x < main.jump_Xp && y > main.jump_Yn && y < main.jump_Yp && z > main.jump_Zn && z < main.jump_Zp)
+            {
+                allowFly = false;
+            }
+        }
+        if (player.getGameMode() == GameMode.SPECTATOR || player.getGameMode() == GameMode.CREATIVE)
+        {
+            player.setAllowFlight(true);
+        }
+        else if (player.getWorld() == main.jump() && allowFly)
         {
             player.setAllowFlight(true);
         }
@@ -37,9 +52,6 @@ public class mainListeners implements Listener {
         // ANTI-LAG SPEC
         if(player.getGameMode() == GameMode.SPECTATOR)
         {
-            // PLAYER X et Z
-            double x = player.getLocation().getX();
-            double z = player.getLocation().getZ();
             // BORDER CO
             double borderXp = player.getWorld().getWorldBorder().getSize()/2 + player.getWorld().getWorldBorder().getCenter().getX();
             double borderZp = player.getWorld().getWorldBorder().getSize()/2 + player.getWorld().getWorldBorder().getCenter().getZ();

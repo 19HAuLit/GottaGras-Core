@@ -242,22 +242,27 @@ public class uhcListeners implements Listener {
     public void Portal(PlayerPortalEvent event)
     {
         Player player = event.getPlayer();
-        World nether = Bukkit.getWorld("uhc_nether");
-        World uhc = Bukkit.getWorld("uhc");
         if (main.uhc_scenario_nether)
         {
-            if (player.getWorld() == nether || player.getWorld() == uhc)
+            if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
             {
-                World world = nether;
-                if (player.getWorld() == nether) world = uhc;
-                int x = player.getLocation().getBlockX()/2;
-                int z = player.getLocation().getBlockZ()/2;
-                Location location = new Location(world, x, player.getLocation().getBlockY(), z);
+                World portalWorld = Bukkit.getWorld("uhc_nether");
+                Location portalFindLoc = new Location(portalWorld, 0 , 100, 0);
+                if (player.getWorld() == Bukkit.getWorld("uhc_nether"))
+                {
+                    portalWorld = Bukkit.getWorld("uhc");
+                    portalFindLoc = new Location(portalWorld, player.getLocation().getX()*2, player.getLocation().getY(), player.getLocation().getZ()*2);
+                }
+                else if (player.getWorld() == Bukkit.getWorld("uhc"))
+                {
+                    portalWorld = Bukkit.getWorld("uhc_nether");
+                    portalFindLoc = new Location(portalWorld, player.getLocation().getX()/2, player.getLocation().getY(), player.getLocation().getZ()/2);
+                }
                 event.useTravelAgent(true);
                 event.getPortalTravelAgent().setCanCreatePortal(true);
-                Location portalLoc = event.getPortalTravelAgent().findOrCreate(location);
-                Location loc = new Location(portalLoc.getWorld(), portalLoc.getBlockX()+0.5, portalLoc.getBlockY(), portalLoc.getBlockZ()+0.5);
-                player.teleport(loc);
+                Location portalLoc = event.getPortalTravelAgent().findOrCreate(portalFindLoc);
+                Location playerTpLoc = new Location(portalWorld, portalLoc.getX()+0.5, portalLoc.getY(), portalLoc.getZ()+0.5);
+                player.teleport(playerTpLoc);
             }
         }
     }

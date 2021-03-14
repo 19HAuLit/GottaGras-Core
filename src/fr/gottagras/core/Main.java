@@ -2,6 +2,7 @@ package fr.gottagras.core;
 
 import fr.gottagras.core.commands.hubCommand;
 import fr.gottagras.core.commands.invseeCommand;
+import fr.gottagras.core.commands.jumpCommand;
 import fr.gottagras.core.commands.uhcCommand;
 import fr.gottagras.core.listeners.hubListeners;
 import fr.gottagras.core.listeners.mainListeners;
@@ -30,6 +31,7 @@ public class Main extends JavaPlugin
         getCommand("hub").setExecutor(new hubCommand(this));
         getCommand("uhc").setExecutor(new uhcCommand(this));
         getCommand("invsee").setExecutor(new invseeCommand(this));
+        getCommand("jump").setExecutor(new jumpCommand(this));
         // Listeners
         getServer().getPluginManager().registerEvents(new mainListeners(this), this);
         getServer().getPluginManager().registerEvents(new hubListeners(this), this);
@@ -54,6 +56,22 @@ public class Main extends JavaPlugin
     }
 
     // Data
+        // JUMP
+    public World jump()
+    {
+        return Bukkit.getWorld(getConfig().getString("jump.world"));
+    }
+    public Location jump_location()
+    {
+        Location location = new Location(jump(), getConfig().getDouble("jump.x"), getConfig().getDouble("jump.y"), getConfig().getDouble("jump.z"));
+        return location;
+    }
+    public double jump_Xp = getConfig().getDouble("jump.xp");
+    public double jump_Yp = getConfig().getDouble("jump.yp");
+    public double jump_Zp = getConfig().getDouble("jump.zp");
+    public double jump_Xn = getConfig().getDouble("jump.xn");
+    public double jump_Yn = getConfig().getDouble("jump.yn");
+    public double jump_Zn = getConfig().getDouble("jump.zn");
         // UHC
     public String uhc_state = "end";
     public String uhc_mode = "uhc";

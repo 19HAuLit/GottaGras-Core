@@ -3,6 +3,7 @@ package fr.gottagras.core.menus;
 import fr.gottagras.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -14,12 +15,27 @@ public class hubMenu {
         this.main = main;
     }
 
+    public void setItem(Player player)
+    {
+        player.getInventory().setItem(0, jump());
+        player.getInventory().setItem(4, navigator());
+    }
+
     public Inventory menu()
     {
         Inventory inventory = Bukkit.createInventory(null, 18, "§4Menu");
         inventory.setItem(4, uhc());
         inventory.setItem(13, uhc_settings());
         return inventory;
+    }
+
+    public ItemStack jump()
+    {
+        ItemStack itemStack = new ItemStack(Material.FEATHER);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName("§2Jump");
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
     }
 
     public ItemStack navigator()

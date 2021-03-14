@@ -14,6 +14,9 @@ commands:
     description: Commande pour regarder l'inventaire d'une joueur
     permission: player.use
     aliases: inv
+  jump:
+    description: Commande pour acceder au jump
+    permission: player.use
 permissions:
   admin.use:
     description: Permissions pour les Admins
