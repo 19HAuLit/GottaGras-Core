@@ -3,6 +3,7 @@ package fr.gottagras.core.menus;
 import fr.gottagras.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,6 +30,7 @@ public class uhcMenu implements Listener
         inventory.setItem(12, fireless());
         inventory.setItem(13, cutclean());
         inventory.setItem(14, hasteyboys());
+        inventory.setItem(15, netherboat());
         inventory.setItem(26, game());
         return inventory;
     }
@@ -88,6 +90,10 @@ public class uhcMenu implements Listener
                     {
                         main.uhc_scenario_hasteyboys = !main.uhc_scenario_hasteyboys;
                     }
+                    else if (itemName.equals(netherboat().getItemMeta().getDisplayName()))
+                    {
+                        main.uhc_scenario_netherboat = !main.uhc_scenario_netherboat;
+                    }
                     else if (itemName.equals(game().getItemMeta().getDisplayName()))
                     {
                         if (main.uhc_state.equals("end")) player.performCommand("uhc new");
@@ -108,6 +114,16 @@ public class uhcMenu implements Listener
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (main.uhc_mode.equals("uhc")) itemMeta.setDisplayName("§7Mode: §6UHC");
         else itemMeta.setDisplayName("§7Mode: §6Meetup");
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
+    public ItemStack netherboat()
+    {
+        ItemStack itemStack = new ItemStack(Material.BOAT);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (main.uhc_scenario_netherboat) itemMeta.setDisplayName("§7NetherBoat: §6ON");
+        else itemMeta.setDisplayName("§7NetherBoat: §6OFF");
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }

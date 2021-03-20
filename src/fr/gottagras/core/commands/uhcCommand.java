@@ -278,6 +278,14 @@ public class uhcCommand implements CommandExecutor {
                                     playerToTp.sendMessage(main.prefix + main.teleport);
                                     if (main.uhc_mode.equals("uhc")) giveStuffUHC(playerToTp);
                                     else giveStuffUHCMeetup(playerToTp);
+                                    try
+                                    {
+                                        Thread.sleep(1000);
+                                    }
+                                    catch (InterruptedException e)
+                                    {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
                         }

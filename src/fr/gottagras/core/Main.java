@@ -103,6 +103,7 @@ public class Main extends JavaPlugin
     public Boolean uhc_scenario_fireless = getConfig().getBoolean("uhc.scenario.fireless");
     public Boolean uhc_scenario_cutclean = getConfig().getBoolean("uhc.scenario.cutclean");
     public Boolean uhc_scenario_hasteyboys = getConfig().getBoolean("uhc.scenario.hasteyboys");
+    public Boolean uhc_scenario_netherboat = getConfig().getBoolean("uhc.scenario.netherboat");
         // MSG
     public String prefix = getConfig().getString("msg.prefix").replace("&", "§");
     public String no_perm = getConfig().getString("msg.no-perm").replace("&", "§");
@@ -181,6 +182,7 @@ public class Main extends JavaPlugin
                 player.teleport(hub_location());
                 player.sendMessage(prefix + teleport);
                 player.getInventory().setItem(4, new hubMenu(this).navigator());
+                player.getInventory().setItem(0, new hubMenu(this).jump());
             }
         }
         Bukkit.unloadWorld(world, true);

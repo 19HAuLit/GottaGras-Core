@@ -5,10 +5,7 @@ import fr.gottagras.core.menus.uhcMenu;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -52,6 +49,27 @@ public class uhcListeners implements Listener {
     }
 
     // EVENTS
+
+    @EventHandler
+    public void onClick(PlayerInteractEntityEvent event)
+    {
+        Player player =  event.getPlayer();
+        if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
+        {
+            if (event.getRightClicked() instanceof Boat && main.uhc_scenario_netherboat)
+            {
+                event.setCancelled(true);
+                World world = Bukkit.getWorld("uhc");
+                Location location = new Location(world,player.getLocation().getX()*2, player.getLocation().getY(), player.getLocation().getZ()*2);
+                if (player.getWorld() == Bukkit.getWorld("uhc"))
+                {
+                    world = Bukkit.getWorld("uhc_nether");
+                    location = new Location(world,player.getLocation().getX()/2, player.getLocation().getY(), player.getLocation().getZ()/2);
+                }
+                player.teleport(location);
+            }
+        }
+    }
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent event)
@@ -184,32 +202,29 @@ public class uhcListeners implements Listener {
     @EventHandler
     public void onDamageByEntity(EntityDamageByEntityEvent event)
     {
-        if (event.getDamager() instanceof Player)
+        Boolean canDamage = true;
+        if (main.uhc_state.equals("begin")) canDamage = false;
+        if (event.getEntity() instanceof Player)
         {
-            if (event.getEntity() instanceof Player)
+            Player player = ((Player) event.getEntity()).getPlayer();
+            if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
             {
-                Player player = ((Player) event.getEntity()).getPlayer();
-                if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
+                if (event.getDamager() instanceof Player)
                 {
-                    if (main.uhc_state.equalsIgnoreCase("begin"))
+                    if (!canDamage) event.setCancelled(true);
+                    lastDamager = (Player) event.getDamager();
+                    lastPvPDamaged = player;
+                    date = new Date();
+                }
+                else if (event.getDamager() instanceof Projectile)
+                {
+                    Projectile projectile = (Projectile) event.getDamager();
+                    if (projectile.getShooter() instanceof Player)
                     {
-                        event.setCancelled(true);
-                    }
-                    else if (event.getDamager() instanceof Player)
-                    {
-                        lastDamager = (Player) event.getDamager();
+                        if (!canDamage) event.setCancelled(true);
+                        lastDamager = (Player) projectile.getShooter();
                         lastPvPDamaged = player;
                         date = new Date();
-                    }
-                    else if (event.getDamager() instanceof Projectile)
-                    {
-                        Projectile projectile = (Projectile) event.getDamager();
-                        if (projectile.getShooter() instanceof Player)
-                        {
-                            lastDamager = (Player) projectile.getShooter();
-                            lastPvPDamaged = player;
-                            date = new Date();
-                        }
                     }
                 }
             }
