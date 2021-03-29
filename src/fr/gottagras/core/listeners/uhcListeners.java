@@ -195,6 +195,13 @@ public class uhcListeners implements Listener {
                         event.setCancelled(true);
                     }
                 }
+                if (main.uhc_scenario_nofall)
+                {
+                    if (event.getCause() == EntityDamageEvent.DamageCause.FALL)
+                    {
+                        event.setCancelled(true);
+                    }
+                }
             }
         }
     }

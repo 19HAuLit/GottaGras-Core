@@ -31,6 +31,7 @@ public class uhcMenu implements Listener
         inventory.setItem(13, cutclean());
         inventory.setItem(14, hasteyboys());
         inventory.setItem(15, netherboat());
+        inventory.setItem(16, nofall());
         inventory.setItem(26, game());
         return inventory;
     }
@@ -94,6 +95,10 @@ public class uhcMenu implements Listener
                     {
                         main.uhc_scenario_netherboat = !main.uhc_scenario_netherboat;
                     }
+                    else if (itemName.equals(nofall().getItemMeta().getDisplayName()))
+                    {
+                        main.uhc_scenario_nofall = !main.uhc_scenario_nofall;
+                    }
                     else if (itemName.equals(game().getItemMeta().getDisplayName()))
                     {
                         if (main.uhc_state.equals("end")) player.performCommand("uhc new");
@@ -114,6 +119,15 @@ public class uhcMenu implements Listener
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (main.uhc_mode.equals("uhc")) itemMeta.setDisplayName("§7Mode: §6UHC");
         else itemMeta.setDisplayName("§7Mode: §6Meetup");
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+    public ItemStack nofall()
+    {
+        ItemStack itemStack = new ItemStack(Material.FEATHER);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (main.uhc_scenario_netherboat) itemMeta.setDisplayName("§7NoFall: §6ON");
+        else itemMeta.setDisplayName("§7NoFall: §6OFF");
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
