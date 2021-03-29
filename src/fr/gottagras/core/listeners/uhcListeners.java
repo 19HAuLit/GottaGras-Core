@@ -20,6 +20,8 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -302,7 +304,15 @@ public class uhcListeners implements Listener {
             ItemStack gapple = new ItemStack(Material.GOLDEN_APPLE, 1);
             location.getWorld().dropItemNaturally(location, gapple);
             // MESSAGE DE MORT
-            if (lastPvPDamaged == player && new Date().getTime()-date.getTime() <= 10000) Bukkit.broadcastMessage(main.prefix + "§6" + lastDamager.getDisplayName() + "§7 vient de tuer §8" + player.getDisplayName());
+            if (lastPvPDamaged == player && new Date().getTime()-date.getTime() <= 10000)
+            {
+                Bukkit.broadcastMessage(main.prefix + "§6" + lastDamager.getDisplayName() + "§7 vient de tuer §8" + player.getDisplayName());
+                if (main.uhc_scenario_nocleanup)
+                {
+                    lastDamager.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 30*20, 2, true));
+                    lastDamager.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 3*20, 2, true));
+                }
+            }
             else Bukkit.broadcastMessage(main.prefix + "§8" + player.getDisplayName() + "§7 est encore mort du §6PvE");
             // GAMEMODE CHANGE
             player.setGameMode(GameMode.SPECTATOR);

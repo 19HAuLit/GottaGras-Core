@@ -32,6 +32,7 @@ public class uhcMenu implements Listener
         inventory.setItem(14, hasteyboys());
         inventory.setItem(15, netherboat());
         inventory.setItem(16, nofall());
+        inventory.setItem(17, nofall());
         inventory.setItem(26, game());
         return inventory;
     }
@@ -99,6 +100,10 @@ public class uhcMenu implements Listener
                     {
                         main.uhc_scenario_nofall = !main.uhc_scenario_nofall;
                     }
+                    else if (itemName.equals(nocleanup().getItemMeta().getDisplayName()))
+                    {
+                        main.uhc_scenario_nocleanup = !main.uhc_scenario_nocleanup;
+                    }
                     else if (itemName.equals(game().getItemMeta().getDisplayName()))
                     {
                         if (main.uhc_state.equals("end")) player.performCommand("uhc new");
@@ -122,6 +127,17 @@ public class uhcMenu implements Listener
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
+
+    public ItemStack nocleanup()
+    {
+        ItemStack itemStack = new ItemStack(Material.GOLDEN_APPLE);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (main.uhc_scenario_netherboat) itemMeta.setDisplayName("§7NoCleanUp: §6ON");
+        else itemMeta.setDisplayName("§7NoCleanUp: §6OFF");
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
     public ItemStack nofall()
     {
         ItemStack itemStack = new ItemStack(Material.FEATHER);

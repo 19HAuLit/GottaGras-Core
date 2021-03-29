@@ -41,3 +41,4 @@ uhc:
     hasteyboys: true
     netherboat: false
     nofall: false
+    nocleanup: false
