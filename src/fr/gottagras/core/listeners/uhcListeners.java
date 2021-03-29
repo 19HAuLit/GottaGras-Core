@@ -60,11 +60,11 @@ public class uhcListeners implements Listener {
             {
                 event.setCancelled(true);
                 World world = Bukkit.getWorld("uhc");
-                Location location = new Location(world,player.getLocation().getX()*2, player.getLocation().getY(), player.getLocation().getZ()*2);
+                Location location = new Location(world,player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
                 if (player.getWorld() == Bukkit.getWorld("uhc"))
                 {
                     world = Bukkit.getWorld("uhc_nether");
-                    location = new Location(world,player.getLocation().getX()/2, player.getLocation().getY(), player.getLocation().getZ()/2);
+                    location = new Location(world,player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
                 }
                 player.teleport(location);
             }
@@ -266,12 +266,12 @@ public class uhcListeners implements Listener {
                 if (player.getWorld() == Bukkit.getWorld("uhc_nether"))
                 {
                     portalWorld = Bukkit.getWorld("uhc");
-                    portalFindLoc = new Location(portalWorld, player.getLocation().getX()*2, player.getLocation().getY(), player.getLocation().getZ()*2);
+                    portalFindLoc = new Location(portalWorld, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
                 }
                 else if (player.getWorld() == Bukkit.getWorld("uhc"))
                 {
                     portalWorld = Bukkit.getWorld("uhc_nether");
-                    portalFindLoc = new Location(portalWorld, player.getLocation().getX()/2, player.getLocation().getY(), player.getLocation().getZ()/2);
+                    portalFindLoc = new Location(portalWorld, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
                 }
                 event.useTravelAgent(true);
                 event.getPortalTravelAgent().setCanCreatePortal(true);

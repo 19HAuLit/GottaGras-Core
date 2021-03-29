@@ -1,14 +1,14 @@
 msg:
-  motd: "&3[&4GottaGras&5-&6Core&7]&8 1.8 => 1.8.9\n&6Mini-jeux:&7 UHC [En dev], PvPSwap [Bientot]"
+  motd: "&3[&4GottaGras&5-&6Core&7]&8 1.8 => 1.8.9\n&6Mini-jeux:&7 UHC, Meetup et d'autre qui arrive"
   op-join: "Le grand &6<player> &8nous a rejoint"
-  op-quit: "Aie, aie, aie, &6<player> &8viens de nous quitter"
+  op-quit: "Aie, aie, aie, &6<player> &8vient de nous quitter"
   player-join: "Slt &6<player>"
   player-quit: "Ciao &6<player>"
   prefix: "&3[&4GottaGras&5-&6Core&7]&8 "
   no-perm: "Impossible d'executer cette commande"
   teleport: "Teleportation reussite"
   impossible: "Action impossible !"
-  revive: "viens d'etre revive"
+  revive: "vient d'etre revive"
 hub:
   world: world
   x: 0.5
@@ -39,3 +39,4 @@ uhc:
     fireless: true
     cutclean: true
     hasteyboys: true
+    netherboat: false

@@ -260,11 +260,41 @@ public class uhcCommand implements CommandExecutor {
                         // Teleportation des joueurs
                         main.uhc_alive_players = new Player[255];
                         main.uhc_number_alive = 0;
-                        for (Player playerToTp : main.uhc_join_players)
+                        /**for (Player playerToTp : main.uhc_join_players)
                         {
                             if (playerToTp != null)
                             {
                                 if (playerToTp.isOnline())
+                                {
+                                    main.uhc_alive_players[main.uhc_number_alive] = playerToTp;
+                                    main.uhc_number_alive++;
+                                    main.allClear(playerToTp);
+                                    playerToTp.setGameMode(GameMode.SURVIVAL);
+                                    int map_size = (int) border.getSize();
+                                    int x = map_size/2-random.nextInt(map_size);
+                                    int z = map_size/2-random.nextInt(map_size);
+                                    Location location = new Location(Bukkit.getWorld("uhc"), x, 255, z);
+                                    playerToTp.teleport(location);
+                                    playerToTp.sendMessage(main.prefix + main.teleport);
+                                    if (main.uhc_mode.equals("uhc")) giveStuffUHC(playerToTp);
+                                    else giveStuffUHCMeetup(playerToTp);
+                                    try
+                                    {
+                                        Thread.sleep(1000);
+                                    }
+                                    catch (InterruptedException e)
+                                    {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                         }
+                            **/
+                        for (Player playerOnline : Bukkit.getOnlinePlayers())
+                        {
+                            for (Player playerToTp : main.uhc_join_players)
+                            {
+                                if (playerOnline == playerToTp)
                                 {
                                     main.uhc_alive_players[main.uhc_number_alive] = playerToTp;
                                     main.uhc_number_alive++;

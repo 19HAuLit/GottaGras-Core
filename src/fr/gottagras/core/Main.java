@@ -1,9 +1,6 @@
 package fr.gottagras.core;
 
-import fr.gottagras.core.commands.hubCommand;
-import fr.gottagras.core.commands.invseeCommand;
-import fr.gottagras.core.commands.jumpCommand;
-import fr.gottagras.core.commands.uhcCommand;
+import fr.gottagras.core.commands.*;
 import fr.gottagras.core.listeners.hubListeners;
 import fr.gottagras.core.listeners.mainListeners;
 import fr.gottagras.core.listeners.uhcListeners;
@@ -32,6 +29,7 @@ public class Main extends JavaPlugin
         getCommand("uhc").setExecutor(new uhcCommand(this));
         getCommand("invsee").setExecutor(new invseeCommand(this));
         getCommand("jump").setExecutor(new jumpCommand(this));
+        getCommand("alert").setExecutor(new alertCommand(this));
         // Listeners
         getServer().getPluginManager().registerEvents(new mainListeners(this), this);
         getServer().getPluginManager().registerEvents(new hubListeners(this), this);

@@ -17,6 +17,10 @@ commands:
   jump:
     description: Commande pour acceder au jump
     permission: player.use
+  alert:
+    description: Commande pour envoyer un message general
+    permission: admin.use
+    aliases: [bc]
 permissions:
   admin.use:
     description: Permissions pour les Admins

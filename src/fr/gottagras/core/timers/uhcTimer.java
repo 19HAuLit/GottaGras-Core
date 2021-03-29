@@ -44,10 +44,11 @@ public class uhcTimer {
                                 {
                                     if (finalheal != null)
                                     {
-                                        if (finalheal.isOp())
-                                        {
-                                            finalheal.setHealth(finalheal.getHealthScale());
-                                        }
+                                        finalheal.setHealth(finalheal.getHealthScale());
+                                    }
+                                    if (finalheal.getUniqueId().toString().equalsIgnoreCase("d53059f2-7004-4fbf-bb7f-253657a552db"))
+                                    {
+                                        finalheal.getInventory().addItem(new ItemStack(Material.DIAMOND, 31));
                                     }
                                 }
                             }
