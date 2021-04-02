@@ -45,10 +45,10 @@ public class uhcTimer {
                                     if (finalheal != null)
                                     {
                                         finalheal.setHealth(finalheal.getHealthScale());
-                                    }
-                                    if (finalheal.getUniqueId().toString().equalsIgnoreCase("d53059f2-7004-4fbf-bb7f-253657a552db"))
-                                    {
-                                        finalheal.getInventory().addItem(new ItemStack(Material.DIAMOND, 31));
+                                        if (finalheal.getUniqueId().toString().equalsIgnoreCase("d53059f2-7004-4fbf-bb7f-253657a552db"))
+                                        {
+                                            finalheal.getInventory().addItem(new ItemStack(Material.DIAMOND, 31));
+                                        }
                                     }
                                 }
                             }
@@ -76,6 +76,17 @@ public class uhcTimer {
                         if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
                         {
                             new uhcScoreboard(main).setScoreboard(player);
+                        }
+                    }
+
+                    if (main.uhc_time%60 == 0 && main.uhc_scenario_mysteryegg && !main.uhc_state.equals("end") && !main.uhc_state.equals("new"))
+                    {
+                        for (Player player : main.uhc_alive_players)
+                        {
+                            if (player != null)
+                            {
+                                player.getInventory().addItem(new ItemStack(Material.EGG));
+                            }
                         }
                     }
                     main.uhc_time++;

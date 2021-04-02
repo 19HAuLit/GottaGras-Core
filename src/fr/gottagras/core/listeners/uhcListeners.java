@@ -51,6 +51,40 @@ public class uhcListeners implements Listener {
     }
 
     // EVENTS
+    @EventHandler
+    public void onEgg(PlayerEggThrowEvent event)
+    {
+        Player player = event.getPlayer();
+        Location eggLocation = event.getEgg().getLocation();
+        Double RandomEgg = random.nextDouble();
+        Double dragonChance = 0.01;
+        Double witherBossChance = 0.01;
+        Double diamondChance = 0.1;
+        Double goldChance = 0.15;
+        Double killChance = 0.000000001;
+        if (RandomEgg < dragonChance)
+        {
+            eggLocation.getWorld().spawnEntity(eggLocation, EntityType.ENDER_DRAGON);
+            Bukkit.broadcastMessage(main.prefix+"Un Ender Dragon vient de spawn sur "+player.getDisplayName());
+        }
+        else if (RandomEgg < witherBossChance + dragonChance && RandomEgg > dragonChance)
+        {
+            eggLocation.getWorld().spawnEntity(eggLocation, EntityType.WITHER);
+            Bukkit.broadcastMessage(main.prefix+"Un Wither Boss vient de spawn sur "+player.getDisplayName());
+        }
+        else if (RandomEgg < diamondChance + witherBossChance && RandomEgg > witherBossChance)
+        {
+            eggLocation.getWorld().dropItem(eggLocation, new ItemStack(Material.DIAMOND, 3));
+        }
+        else if (RandomEgg < goldChance + diamondChance && RandomEgg > diamondChance)
+        {
+            eggLocation.getWorld().dropItem(eggLocation, new ItemStack(Material.GOLD_INGOT, 8));
+        }
+        else if (RandomEgg < killChance + diamondChance && RandomEgg > goldChance)
+        {
+            player.setHealth(0);
+        }
+    }
 
     @EventHandler
     public void onClick(PlayerInteractEntityEvent event)

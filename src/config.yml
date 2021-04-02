@@ -42,3 +42,4 @@ uhc:
     netherboat: false
     nofall: false
     nocleanup: false
+    mysteryegg: false
