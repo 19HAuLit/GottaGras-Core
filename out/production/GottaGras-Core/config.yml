@@ -40,3 +40,6 @@ uhc:
     cutclean: true
     hasteyboys: true
     netherboat: false
+    nofall: false
+    nocleanup: false
+    mysteryegg: false

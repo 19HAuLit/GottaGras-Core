@@ -1,6 +1,6 @@
 name: GottaGras-Core
 main: fr.gottagras.core.Main
-version: 0.1
+version: 1.0
 description: Plugin mini-jeux by 19HAuLit
 commands:
   hub:
