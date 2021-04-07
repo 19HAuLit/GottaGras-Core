@@ -56,107 +56,110 @@ public class uhcListeners implements Listener {
     {
         Player player = event.getPlayer();
         Location eggLocation = event.getEgg().getLocation();
-        if (main.uhc_scenario_mysteryegg && player.getWorld() == Bukkit.getWorld("uhc") && player.getWorld() == Bukkit.getWorld("uhc_nether"))
+        if(main.uhc_scenario_mysteryegg)
         {
-            double RandomEgg = random.nextDouble();
-            double currentChance = 0.0;
-            double dragonChance = 0.01;
-            double witherBossChance = 0.01;
-            double diamondChance = 0.1;
-            double goldChance = 0.15;
-            double killChance = 0.000000001;
-            double zombieChance = 0.08;
-            double skeletonChance = 0.08;
-            double creeperChance = 0.08;
-            double anvilChance = 0.1;
-            double enchantChance = 0.05;
-            double giveCoordChance = 0.05;
-            double revealCoordChance = 0.02;
-            if (RandomEgg < dragonChance)
+            if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
             {
-                eggLocation.getWorld().spawnEntity(eggLocation, EntityType.ENDER_DRAGON);
-                Bukkit.broadcastMessage(main.prefix+"Un Ender Dragon vient de spawn sur "+player.getDisplayName());
-            }
-            currentChance += dragonChance;
-            if (RandomEgg < witherBossChance + currentChance && RandomEgg > currentChance)
-            {
-                eggLocation.getWorld().spawnEntity(eggLocation, EntityType.WITHER);
-                Bukkit.broadcastMessage(main.prefix+"Un Wither Boss vient de spawn sur "+player.getDisplayName());
-            }
-            currentChance += witherBossChance;
-            if (RandomEgg < diamondChance + currentChance && RandomEgg > currentChance)
-            {
-                eggLocation.getWorld().dropItem(eggLocation, new ItemStack(Material.DIAMOND, 3));
-            }
-            currentChance += diamondChance;
-            if (RandomEgg < goldChance + currentChance && RandomEgg > currentChance)
-            {
-                eggLocation.getWorld().dropItem(eggLocation, new ItemStack(Material.GOLD_INGOT, 8));
-            }
-            currentChance += goldChance;
-            if (RandomEgg < killChance + currentChance && RandomEgg > currentChance)
-            {
-                player.setHealth(0);
-            }
-            currentChance += killChance;
-            if (RandomEgg < zombieChance + currentChance && RandomEgg > currentChance)
-            {
-                int zombieNb = random.nextInt(25);
-                player.sendMessage(main.prefix+zombieNb+" Zombies viennent de spawn de l'Oeuf");
-                for (int i = 0; i < zombieNb; i++)
+                double RandomEgg = random.nextDouble();
+                double currentChance = 0.0;
+                double dragonChance = 0.001;
+                double witherBossChance = 0.001;
+                double diamondChance = 0.1;
+                double goldChance = 0.15;
+                double killChance = 0.000000001;
+                double zombieChance = 0.08;
+                double skeletonChance = 0.08;
+                double creeperChance = 0.08;
+                double anvilChance = 0.1;
+                double enchantChance = 0.05;
+                double giveCoordChance = 0.05;
+                double revealCoordChance = 0.02;
+                if (RandomEgg < dragonChance)
                 {
-                    eggLocation.getWorld().spawnEntity(eggLocation, EntityType.ZOMBIE);
+                    eggLocation.getWorld().spawnEntity(eggLocation, EntityType.ENDER_DRAGON);
+                    Bukkit.broadcastMessage(main.prefix+"Un Ender Dragon vient de spawn sur "+player.getDisplayName());
                 }
-            }
-            currentChance += zombieChance;
-            if (RandomEgg < skeletonChance + currentChance && RandomEgg > currentChance)
-            {
-                int skeletonNb = random.nextInt(25);
-                player.sendMessage(main.prefix+skeletonNb+" Skeleton viennent de spawn de l'Oeuf");
-                for (int i = 0; i < skeletonNb; i++)
+                currentChance += dragonChance;
+                if (RandomEgg < witherBossChance + currentChance && RandomEgg > currentChance)
                 {
-                    eggLocation.getWorld().spawnEntity(eggLocation, EntityType.SKELETON);
+                    eggLocation.getWorld().spawnEntity(eggLocation, EntityType.WITHER);
+                    Bukkit.broadcastMessage(main.prefix+"Un Wither Boss vient de spawn sur "+player.getDisplayName());
                 }
-            }
-            currentChance += skeletonChance;
-            if (RandomEgg < creeperChance + currentChance && RandomEgg > currentChance)
-            {
-                int creeperNb = random.nextInt(5);
-                player.sendMessage(main.prefix+creeperNb+" Creeper viennent de spawn de l'Oeuf");
-                for (int i = 0; i < creeperNb; i++)
+                currentChance += witherBossChance;
+                if (RandomEgg < diamondChance + currentChance && RandomEgg > currentChance)
                 {
-                    eggLocation.getWorld().spawnEntity(eggLocation, EntityType.CREEPER);
+                    eggLocation.getWorld().dropItem(eggLocation, new ItemStack(Material.DIAMOND, 3));
                 }
-            }
-            currentChance += creeperChance;
-            if (RandomEgg < anvilChance + currentChance && RandomEgg > currentChance)
-            {
-                eggLocation.getWorld().dropItem(eggLocation, new ItemStack(Material.ANVIL));
-            }
-            currentChance += anvilChance;
-            if (RandomEgg < enchantChance + currentChance && RandomEgg > currentChance)
-            {
-                eggLocation.getWorld().dropItem(eggLocation, new ItemStack(Material.ENCHANTMENT_TABLE));
-            }
-            currentChance += enchantChance;
-            if (RandomEgg < giveCoordChance + currentChance && RandomEgg > currentChance)
-            {
-                boolean isDid = false;
-                while (!isDid)
+                currentChance += diamondChance;
+                if (RandomEgg < goldChance + currentChance && RandomEgg > currentChance)
                 {
-                    int victimId = random.nextInt(main.uhc_alive_players.length);
-                    if (main.uhc_alive_players[victimId] != null)
+                    eggLocation.getWorld().dropItem(eggLocation, new ItemStack(Material.GOLD_INGOT, 8));
+                }
+                currentChance += goldChance;
+                if (RandomEgg < killChance + currentChance && RandomEgg > currentChance)
+                {
+                    player.setHealth(0);
+                }
+                currentChance += killChance;
+                if (RandomEgg < zombieChance + currentChance && RandomEgg > currentChance)
+                {
+                    int zombieNb = random.nextInt(25);
+                    player.sendMessage(main.prefix+zombieNb+" Zombies viennent de spawn de l'Oeuf");
+                    for (int i = 0; i < zombieNb; i++)
                     {
-                        Player victim = main.uhc_alive_players[victimId];
-                        player.sendMessage(main.prefix + victim.getDisplayName() + " est dans "+ victim.getWorld().getName() + " en X: "+ (int) victim.getLocation().getX() +" Y: "+ (int) victim.getLocation().getY() +" Z: "+ (int) victim.getLocation().getZ());
-                        isDid = true;
+                        eggLocation.getWorld().spawnEntity(eggLocation, EntityType.ZOMBIE);
                     }
                 }
-            }
-            currentChance += giveCoordChance;
-            if (RandomEgg < revealCoordChance + currentChance && RandomEgg > currentChance)
-            {
-                Bukkit.broadcastMessage(main.prefix+player.getDisplayName()+" se trouve dans "+ player.getWorld().getName() + " en X: "+ (int) player.getLocation().getX() +" Y: "+ (int) player.getLocation().getY() +" Z: "+ (int) player.getLocation().getZ());
+                currentChance += zombieChance;
+                if (RandomEgg < skeletonChance + currentChance && RandomEgg > currentChance)
+                {
+                    int skeletonNb = random.nextInt(25);
+                    player.sendMessage(main.prefix+skeletonNb+" Skeleton viennent de spawn de l'Oeuf");
+                    for (int i = 0; i < skeletonNb; i++)
+                    {
+                        eggLocation.getWorld().spawnEntity(eggLocation, EntityType.SKELETON);
+                    }
+                }
+                currentChance += skeletonChance;
+                if (RandomEgg < creeperChance + currentChance && RandomEgg > currentChance)
+                {
+                    int creeperNb = random.nextInt(5);
+                    player.sendMessage(main.prefix+creeperNb+" Creeper viennent de spawn de l'Oeuf");
+                    for (int i = 0; i < creeperNb; i++)
+                    {
+                        eggLocation.getWorld().spawnEntity(eggLocation, EntityType.CREEPER);
+                    }
+                }
+                currentChance += creeperChance;
+                if (RandomEgg < anvilChance + currentChance && RandomEgg > currentChance)
+                {
+                    eggLocation.getWorld().dropItem(eggLocation, new ItemStack(Material.ANVIL));
+                }
+                currentChance += anvilChance;
+                if (RandomEgg < enchantChance + currentChance && RandomEgg > currentChance)
+                {
+                    eggLocation.getWorld().dropItem(eggLocation, new ItemStack(Material.ENCHANTMENT_TABLE));
+                }
+                currentChance += enchantChance;
+                if (RandomEgg < giveCoordChance + currentChance && RandomEgg > currentChance)
+                {
+                    boolean isDid = false;
+                    while (!isDid)
+                    {
+                        int victimId = random.nextInt(main.uhc_alive_players.length);
+                        if (main.uhc_alive_players[victimId] != null)
+                        {
+                            Player victim = main.uhc_alive_players[victimId];
+                            player.sendMessage(main.prefix + victim.getDisplayName() + " est dans "+ victim.getWorld().getName() + " en X: "+ (int) victim.getLocation().getX() +" Y: "+ (int) victim.getLocation().getY() +" Z: "+ (int) victim.getLocation().getZ());
+                            isDid = true;
+                        }
+                    }
+                }
+                currentChance += giveCoordChance;
+                if (RandomEgg < revealCoordChance + currentChance && RandomEgg > currentChance)
+                {
+                    Bukkit.broadcastMessage(main.prefix+player.getDisplayName()+" se trouve dans "+ player.getWorld().getName() + " en X: "+ (int) player.getLocation().getX() +" Y: "+ (int) player.getLocation().getY() +" Z: "+ (int) player.getLocation().getZ());
+                }
             }
         }
     }
@@ -375,7 +378,8 @@ public class uhcListeners implements Listener {
     public void Portal(PlayerPortalEvent event)
     {
         Player player = event.getPlayer();
-        if (main.uhc_scenario_nether)
+        String portalType = player.getLocation().getBlock().getType().toString();
+        if (main.uhc_scenario_nether && portalType.equalsIgnoreCase("PORTAL"))
         {
             if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
             {
@@ -397,6 +401,10 @@ public class uhcListeners implements Listener {
                 Location playerTpLoc = new Location(portalWorld, portalLoc.getX()+0.5, portalLoc.getY(), portalLoc.getZ()+0.5);
                 player.teleport(playerTpLoc);
             }
+        }
+        else if (main.uhc_scenario_end && portalType.equalsIgnoreCase("ENDER_PORTAL"))
+        {
+
         }
     }
 
