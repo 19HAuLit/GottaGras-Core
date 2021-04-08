@@ -147,7 +147,7 @@ public class uhcMenu implements Listener
         ItemStack itemStack = new ItemStack(Material.ENDER_PEARL);
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (main.uhc_scenario_endmid) itemMeta.setDisplayName("§7End Mid: §6ON");
-        else itemMeta.setDisplayName("§End Mid: §6OFF");
+        else itemMeta.setDisplayName("§7End Mid: §6OFF");
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }

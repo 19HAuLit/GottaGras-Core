@@ -31,7 +31,7 @@ public class hubCommand implements CommandExecutor {
                 player.sendMessage(main.prefix + main.teleport);
                 new hubMenu(main).setItem(player);
             }
-            else if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
+            else if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether") || player.getWorld() == Bukkit.getWorld("uhc_end"))
             {
                 if (player.getGameMode() == GameMode.SURVIVAL)
                 {
