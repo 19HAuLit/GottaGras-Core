@@ -51,6 +51,7 @@ public class Main extends JavaPlugin
     {
         unLoadWord(Bukkit.getWorld("uhc"));
         unLoadWord(Bukkit.getWorld("uhc_nether"));
+        unLoadWord(Bukkit.getWorld("uhc_end"));
     }
 
     // Data
@@ -135,7 +136,7 @@ public class Main extends JavaPlugin
             {
                 if (alive != null)
                 {
-                    Bukkit.broadcastMessage(prefix + alive.getDisplayName() + " §9a gagné l'UHC, GG!");
+                    if (alive.isOnline()) Bukkit.broadcastMessage(prefix + alive.getDisplayName() + " §9a gagné l'UHC, GG!");
                 }
             }
         }

@@ -58,7 +58,7 @@ public class uhcListeners implements Listener {
         Location eggLocation = event.getEgg().getLocation();
         if(main.uhc_scenario_mysteryegg)
         {
-            if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
+            if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether") || player.getWorld() == Bukkit.getWorld("uhc_end"))
             {
                 double RandomEgg = random.nextDouble();
                 double currentChance = 0.0;
@@ -168,7 +168,7 @@ public class uhcListeners implements Listener {
     public void onClick(PlayerInteractEntityEvent event)
     {
         Player player =  event.getPlayer();
-        if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
+        if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether") || player.getWorld() == Bukkit.getWorld("uhc_end"))
         {
             if (event.getRightClicked() instanceof Boat && main.uhc_scenario_netherboat)
             {
@@ -200,7 +200,7 @@ public class uhcListeners implements Listener {
         Player player = event.getPlayer();
         Block block = event.getBlock();
         Material material = block.getType();
-        if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
+        if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether") || player.getWorld() == Bukkit.getWorld("uhc_end"))
         {
             if (main.uhc_scenario_cutclean)
             {
@@ -227,7 +227,7 @@ public class uhcListeners implements Listener {
     public void onInvClick(InventoryClickEvent event)
     {
         Player player = (Player) event.getWhoClicked();
-        if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
+        if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether") || player.getWorld() == Bukkit.getWorld("uhc_end"))
         {
             for (ItemStack itemStack : event.getInventory().getContents())
             {
@@ -252,7 +252,7 @@ public class uhcListeners implements Listener {
     public void onJoin(PlayerJoinEvent event)
     {
         Player player = event.getPlayer();
-        if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
+        if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether") || player.getWorld() == Bukkit.getWorld("uhc_end"))
         {
             int i = 0;
             boolean isOut = true;
@@ -277,7 +277,7 @@ public class uhcListeners implements Listener {
     public void onQuit(PlayerQuitEvent event)
     {
         Player player = event.getPlayer();
-        if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
+        if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether") || player.getWorld() == Bukkit.getWorld("uhc_end"))
         {
             for (Player joinPlayer : main.uhc_alive_players)
             {
@@ -296,7 +296,7 @@ public class uhcListeners implements Listener {
         if (event.getEntity() instanceof Player)
         {
             Player player = ((Player) event.getEntity()).getPlayer();
-            if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
+            if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether") || player.getWorld() == Bukkit.getWorld("uhc_end"))
             {
                 if (main.uhc_state.equalsIgnoreCase("start"))
                 {
@@ -328,7 +328,7 @@ public class uhcListeners implements Listener {
         if (event.getEntity() instanceof Player)
         {
             Player player = ((Player) event.getEntity()).getPlayer();
-            if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
+            if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether") || player.getWorld() == Bukkit.getWorld("uhc_end"))
             {
                 if (event.getDamager() instanceof Player)
                 {
@@ -359,7 +359,7 @@ public class uhcListeners implements Listener {
         Location location = new Location(block.getWorld(), block.getX()+0.5, block.getY()+0.5, block.getZ()+0.5);
         if (main.uhc_scenario_alltreedrop)
         {
-            if (location.getWorld() == Bukkit.getWorld("uhc") || location.getWorld() == Bukkit.getWorld("uhc_nether"))
+            if (location.getWorld() == Bukkit.getWorld("uhc"))
             {
                 if (block.getType() == Material.LEAVES)
                 {
@@ -404,7 +404,19 @@ public class uhcListeners implements Listener {
         }
         else if (main.uhc_scenario_end && portalType.equalsIgnoreCase("ENDER_PORTAL"))
         {
-
+            if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_end"))
+            {
+                if (player.getWorld() == Bukkit.getWorld("uhc_end"))
+                {
+                    int y = Bukkit.getWorld("uhc").getHighestBlockYAt(-10, 10);
+                    player.teleport(new Location(Bukkit.getWorld("uhc"), -10 , y, 10));
+                }
+                else if (player.getWorld() == Bukkit.getWorld("uhc"))
+                {
+                    int y = Bukkit.getWorld("uhc_end").getHighestBlockYAt(-10, 10);
+                    player.teleport(new Location(Bukkit.getWorld("uhc_end"), -10 , y, 10));
+                }
+            }
         }
     }
 
@@ -412,7 +424,7 @@ public class uhcListeners implements Listener {
     public void onDeath(PlayerDeathEvent event)
     {
         Player player = event.getEntity();
-        if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
+        if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether") || player.getWorld() == Bukkit.getWorld("uhc_end"))
         {
             event.setDeathMessage(null);
             // DROP GAPP

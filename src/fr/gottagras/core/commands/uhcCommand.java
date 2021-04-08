@@ -146,6 +146,8 @@ public class uhcCommand implements CommandExecutor {
                         worldCreatorUHC.environment(World.Environment.NORMAL);
                         WorldCreator worldCreatorUHCNether = new WorldCreator("uhc_nether");
                         worldCreatorUHCNether.environment(World.Environment.NETHER);
+                        WorldCreator worldCreatorUHCEnd = new WorldCreator("uhc_end");
+                        worldCreatorUHCEnd.environment(World.Environment.THE_END);
                         if (strings.length > 1)
                         {
                             // SET SEED
@@ -155,20 +157,20 @@ public class uhcCommand implements CommandExecutor {
                             main.fileDelete(uhcFile);
                             File uhcNetherFile = new File(System.getProperty("user.dir") + "\\uhc_nether");
                             main.fileDelete(uhcNetherFile);
+                            File uhcEndFile = new File(System.getProperty("user.dir") + "\\uhc_end");
+                            main.fileDelete(uhcEndFile);
                             // SEED WORLD
                             worldCreatorUHC.seed(main.seed);
                             worldCreatorUHCNether.seed(main.seed);
+                            worldCreatorUHCEnd.seed(main.seed);
                             // CREATION WORLD
                             worldCreatorUHC.environment(World.Environment.NORMAL);
                             worldCreatorUHCNether.environment(World.Environment.NETHER);
-                            Bukkit.createWorld(worldCreatorUHC);
-                            Bukkit.createWorld(worldCreatorUHCNether);
+                            worldCreatorUHCEnd.environment(World.Environment.THE_END);
                         }
-                        else
-                        {
-                            Bukkit.createWorld(worldCreatorUHC);
-                            Bukkit.createWorld(worldCreatorUHCNether);
-                        }
+                        Bukkit.createWorld(worldCreatorUHC);
+                        Bukkit.createWorld(worldCreatorUHCNether);
+                        Bukkit.createWorld(worldCreatorUHCEnd);
 
                         // ANNONCE
                         Bukkit.broadcastMessage(main.prefix + "Un nouveau UHC viens d'etre creer ");
@@ -257,6 +259,8 @@ public class uhcCommand implements CommandExecutor {
                         uhcNether.setTime(0);
                         uhcNether.setGameRuleValue("naturalRegeneration","false");
                         uhc.setAutoSave(false);
+                        World uhcEnd = Bukkit.getWorld("uhc_end");
+                        uhcEnd.setAutoSave(false);
                         // Teleportation des joueurs
                         main.uhc_alive_players = new Player[255];
                         main.uhc_number_alive = 0;
@@ -306,6 +310,7 @@ public class uhcCommand implements CommandExecutor {
                         // UNLOAD
                         main.unLoadWord(Bukkit.getWorld("uhc"));
                         main.unLoadWord(Bukkit.getWorld("uhc_nether"));
+                        main.unLoadWord(Bukkit.getWorld("uhc_end"));
                     }
                     else commandSender.sendMessage(main.prefix + main.no_perm);
                     break;
@@ -381,8 +386,8 @@ public class uhcCommand implements CommandExecutor {
                             main.uhc_number_revive--;
                             main.allClear(playerRevive);
                             playerRevive.setGameMode(GameMode.SURVIVAL);
-                            playerRevive.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 30*20, 255, true, false));
-                            playerRevive.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 30*20, 255, true, false));
+                            playerRevive.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10*20, 255, true, false));
+                            playerRevive.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 10*20, 255, true, false));
                             playerRevive.teleport(location);
                             if (main.uhc_mode.equals("uhc")) giveStuffUHC(playerRevive);
                             else giveStuffUHCMeetup(playerRevive);

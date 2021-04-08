@@ -33,6 +33,7 @@ public class uhcMenu implements Listener
         inventory.setItem(16, nofall());
         inventory.setItem(17, nocleanup());
         inventory.setItem(18, mysteryegg());
+        inventory.setItem(19, end());
         inventory.setItem(26, game());
         return inventory;
     }
@@ -108,6 +109,10 @@ public class uhcMenu implements Listener
                     {
                         main.uhc_scenario_mysteryegg = !main.uhc_scenario_mysteryegg;
                     }
+                    else if (itemName.equals(end().getItemMeta().getDisplayName()))
+                    {
+                        main.uhc_scenario_end = !main.uhc_scenario_end;
+                    }
                     else if (itemName.equals(game().getItemMeta().getDisplayName()))
                     {
                         if (main.uhc_state.equals("end")) player.performCommand("uhc new");
@@ -128,6 +133,16 @@ public class uhcMenu implements Listener
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (main.uhc_mode.equals("uhc")) itemMeta.setDisplayName("§7Mode: §6UHC");
         else itemMeta.setDisplayName("§7Mode: §6Meetup");
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
+    public ItemStack end()
+    {
+        ItemStack itemStack = new ItemStack(Material.ENDER_PORTAL_FRAME);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (main.uhc_scenario_end) itemMeta.setDisplayName("§7End: §6ON");
+        else itemMeta.setDisplayName("§7End: §6OFF");
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }

@@ -73,7 +73,7 @@ public class uhcTimer {
                     }
                     for (Player player : Bukkit.getOnlinePlayers())
                     {
-                        if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether"))
+                        if (player.getWorld() == Bukkit.getWorld("uhc") || player.getWorld() == Bukkit.getWorld("uhc_nether") || player.getWorld() == Bukkit.getWorld("uhc_end"))
                         {
                             new uhcScoreboard(main).setScoreboard(player);
                         }
