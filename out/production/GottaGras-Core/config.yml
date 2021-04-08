@@ -43,3 +43,5 @@ uhc:
     nofall: false
     nocleanup: false
     mysteryegg: false
+    end: true
+    endmid: false

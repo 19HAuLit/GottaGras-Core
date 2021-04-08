@@ -21,7 +21,7 @@ public class uhcMenu implements Listener
 
     public Inventory menu()
     {
-        Inventory inventory = Bukkit.createInventory(null, 27, "§6UHC");
+        Inventory inventory = Bukkit.createInventory(null, 36, "§6UHC");
         inventory.setItem(0, mode());
         inventory.setItem(9, nether());
         inventory.setItem(10, finalheal());
@@ -34,7 +34,8 @@ public class uhcMenu implements Listener
         inventory.setItem(17, nocleanup());
         inventory.setItem(18, mysteryegg());
         inventory.setItem(19, end());
-        inventory.setItem(26, game());
+        inventory.setItem(20, end_middle());
+        inventory.setItem(35, game());
         return inventory;
     }
 
@@ -113,6 +114,10 @@ public class uhcMenu implements Listener
                     {
                         main.uhc_scenario_end = !main.uhc_scenario_end;
                     }
+                    else if (itemName.equals(end_middle().getItemMeta().getDisplayName()))
+                    {
+                        main.uhc_scenario_endmid = !main.uhc_scenario_endmid;
+                    }
                     else if (itemName.equals(game().getItemMeta().getDisplayName()))
                     {
                         if (main.uhc_state.equals("end")) player.performCommand("uhc new");
@@ -133,6 +138,16 @@ public class uhcMenu implements Listener
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (main.uhc_mode.equals("uhc")) itemMeta.setDisplayName("§7Mode: §6UHC");
         else itemMeta.setDisplayName("§7Mode: §6Meetup");
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
+    public ItemStack end_middle()
+    {
+        ItemStack itemStack = new ItemStack(Material.ENDER_PEARL);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (main.uhc_scenario_endmid) itemMeta.setDisplayName("§7End Mid: §6ON");
+        else itemMeta.setDisplayName("§End Mid: §6OFF");
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }

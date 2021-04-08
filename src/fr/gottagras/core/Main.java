@@ -107,6 +107,7 @@ public class Main extends JavaPlugin
     public Boolean uhc_scenario_nocleanup = getConfig().getBoolean("uhc.scenario.nocleanup");
     public Boolean uhc_scenario_mysteryegg = getConfig().getBoolean("uhc.scenario.mysteryegg");
     public Boolean uhc_scenario_end = getConfig().getBoolean("uhc.scenario.end");
+    public Boolean uhc_scenario_endmid = getConfig().getBoolean("uhc.scenario.endmid");
         // MSG
     public String prefix = getConfig().getString("msg.prefix").replace("&", "§");
     public String no_perm = getConfig().getString("msg.no-perm").replace("&", "§");

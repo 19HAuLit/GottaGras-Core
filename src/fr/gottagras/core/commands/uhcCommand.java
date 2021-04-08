@@ -4,6 +4,7 @@ import fr.gottagras.core.Main;
 import fr.gottagras.core.menus.uhcMenu;
 import fr.gottagras.core.timers.uhcTimer;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -292,6 +293,34 @@ public class uhcCommand implements CommandExecutor {
                                     }
                                 }
                             }
+                        }
+                        // END MIDDLE
+                        if (main.uhc_scenario_endmid)
+                        {
+                            Location spawn = Bukkit.getWorld("uhc").getWorldBorder().getCenter();
+                            int yMax = 0;
+                            for (int i = spawn.getBlockX()-3; i < spawn.getBlockX()+2; i++)
+                            {
+                                for (int j = spawn.getBlockZ()-3; j < spawn.getBlockZ()+2; j++)
+                                {
+                                    int actualY = Bukkit.getWorld("uhc").getHighestBlockYAt(i, j);
+                                    if (actualY > yMax) yMax = actualY;
+                                }
+                            }
+                            for (int i = spawn.getBlockX()-3; i < spawn.getBlockX()+2; i++)
+                            {
+                                for (int j = spawn.getBlockZ()-3; j < spawn.getBlockZ()+2; j++)
+                                {
+                                    Block block = Bukkit.getWorld("uhc").getBlockAt(i, yMax, j);
+                                    if (i == spawn.getBlockX()-3 && j == spawn.getBlockZ()-3) block.setType(Material.ENDER_STONE);
+                                    else if (i == spawn.getBlockX()-3 && j == spawn.getBlockZ()+1) block.setType(Material.ENDER_STONE);
+                                    else if (i == spawn.getBlockX()+1 && j == spawn.getBlockZ()-3) block.setType(Material.ENDER_STONE);
+                                    else if (i == spawn.getBlockX()+1 && j == spawn.getBlockZ()+1) block.setType(Material.ENDER_STONE);
+                                    else if (i == spawn.getBlockX()-3 || i == spawn.getBlockX()+1 || j == spawn.getBlockZ()-3 || j == spawn.getBlockZ()+1) block.setType(Material.ENDER_PORTAL_FRAME);
+                                    else block.setType(Material.ENDER_PORTAL);
+                                }
+                            }
+
                         }
                         // TIMER
                         new uhcTimer(main).startTimer();
