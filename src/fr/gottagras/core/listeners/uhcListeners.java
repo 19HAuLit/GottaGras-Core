@@ -62,11 +62,11 @@ public class uhcListeners implements Listener {
             {
                 double RandomEgg = random.nextDouble();
                 double currentChance = 0.0;
-                double dragonChance = 0.001;
-                double witherBossChance = 0.001;
-                double diamondChance = 0.1;
-                double goldChance = 0.15;
-                double killChance = 0.000000001;
+                double dragonChance = 0.0005;
+                double witherBossChance = 0.0005;
+                double diamondChance = 0.08;
+                double goldChance = 0.1;
+                double killChance = 0.000001;
                 double zombieChance = 0.08;
                 double skeletonChance = 0.08;
                 double creeperChance = 0.08;
@@ -74,6 +74,13 @@ public class uhcListeners implements Listener {
                 double enchantChance = 0.05;
                 double giveCoordChance = 0.05;
                 double revealCoordChance = 0.02;
+                double switchInventoryChance = 0.05;
+                double clearInventory = 0.001;
+                double mlgChance = 0.05;
+                double dropEnchantChance = 0.05;
+                double switchLocationChance = 0.05;
+                double endChance = 0.001;
+                double giveStringChance = 0.15;
                 if (RandomEgg < dragonChance)
                 {
                     eggLocation.getWorld().spawnEntity(eggLocation, EntityType.ENDER_DRAGON);
@@ -99,6 +106,7 @@ public class uhcListeners implements Listener {
                 if (RandomEgg < killChance + currentChance && RandomEgg > currentChance)
                 {
                     player.setHealth(0);
+                    player.sendMessage(main.prefix+"Vous êtes mort, pas de chance !!");
                 }
                 currentChance += killChance;
                 if (RandomEgg < zombieChance + currentChance && RandomEgg > currentChance)
@@ -147,7 +155,11 @@ public class uhcListeners implements Listener {
                     while (!isDid)
                     {
                         int victimId = random.nextInt(main.uhc_alive_players.length);
-                        if (main.uhc_alive_players[victimId] != null)
+                        if (main.uhc_number_alive < 2)
+                        {
+                            isDid = true;
+                        }
+                        else if (main.uhc_alive_players[victimId] != null && main.uhc_alive_players[victimId] != player)
                         {
                             Player victim = main.uhc_alive_players[victimId];
                             player.sendMessage(main.prefix + victim.getDisplayName() + " est dans "+ victim.getWorld().getName() + " en X: "+ (int) victim.getLocation().getX() +" Y: "+ (int) victim.getLocation().getY() +" Z: "+ (int) victim.getLocation().getZ());
@@ -160,6 +172,84 @@ public class uhcListeners implements Listener {
                 {
                     Bukkit.broadcastMessage(main.prefix+player.getDisplayName()+" se trouve dans "+ player.getWorld().getName() + " en X: "+ (int) player.getLocation().getX() +" Y: "+ (int) player.getLocation().getY() +" Z: "+ (int) player.getLocation().getZ());
                 }
+                currentChance += revealCoordChance;
+                if (RandomEgg < switchInventoryChance + currentChance && RandomEgg > currentChance)
+                {
+                    boolean isDid = false;
+                    while (!isDid)
+                    {
+                        int victimId = random.nextInt(main.uhc_alive_players.length);
+                        if (main.uhc_number_alive < 2)
+                        {
+                            isDid = true;
+                        }
+                        else if (main.uhc_alive_players[victimId] != null && main.uhc_alive_players[victimId] != player)
+                        {
+                            Inventory victimInv = main.uhc_alive_players[victimId].getInventory();
+                            ItemStack[] victimArmor = main.uhc_alive_players[victimId].getInventory().getArmorContents();
+                            Inventory playerInv = player.getInventory();
+                            ItemStack[] playerArmor = player.getInventory().getArmorContents();
+                            player.getInventory().setContents(victimInv.getContents());
+                            player.getInventory().setArmorContents(victimArmor);
+                            main.uhc_alive_players[victimId].getInventory().setContents(playerInv.getContents());
+                            main.uhc_alive_players[victimId].getInventory().setArmorContents(playerArmor);
+                            isDid = true;
+                        }
+                        Bukkit.broadcastMessage(main.prefix+main.uhc_alive_players[victimId].getDisplayName()+" vient d'échanger son stuff avec "+player.getDisplayName());
+                    }
+                }
+                currentChance += switchInventoryChance;
+                if (RandomEgg < clearInventory + currentChance && RandomEgg > currentChance)
+                {
+                    main.clearStuff(player);
+                    Bukkit.broadcastMessage(main.prefix+player.getDisplayName()+" viens de perdre son stuff");
+                }
+                currentChance += clearInventory;
+                if (RandomEgg < mlgChance + currentChance && RandomEgg > currentChance)
+                {
+                    int y = Bukkit.getWorld("uhc").getHighestBlockYAt(player.getLocation());
+                    player.teleport(new Location(player.getLocation().getWorld(), player.getLocation().getX(),y + 20, player.getLocation().getZ()));
+                    Bukkit.broadcastMessage(main.prefix+player.getDisplayName()+" tente un MLG");
+                }
+                currentChance += mlgChance;
+                if (RandomEgg < enchantChance + currentChance && RandomEgg > currentChance)
+                {
+                    player.sendMessage(main.prefix+"pas encore dev...");
+                }
+                currentChance += enchantChance;
+                if (RandomEgg < switchLocationChance + currentChance && RandomEgg > currentChance)
+                {
+                    boolean isDid = false;
+                    while (!isDid)
+                    {
+                        int victimId = random.nextInt(main.uhc_alive_players.length);
+                        if (main.uhc_number_alive < 2)
+                        {
+                            isDid = true;
+                        }
+                        else if (main.uhc_alive_players[victimId] != null && main.uhc_alive_players[victimId] != player)
+                        {
+                            Location playerLoc = player.getLocation();
+                            Location victimLoc = main.uhc_alive_players[victimId].getLocation();
+                            player.teleport(victimLoc);
+                            main.uhc_alive_players[victimId].teleport(playerLoc);
+                            isDid = true;
+                        }
+                        Bukkit.broadcastMessage(main.prefix+main.uhc_alive_players[victimId].getDisplayName()+" vient d'échanger de position avec "+player.getDisplayName());
+                    }
+                }
+                currentChance += switchLocationChance;
+                if (RandomEgg < endChance + currentChance && RandomEgg > currentChance)
+                {
+                    int y = Bukkit.getWorld("uhc_end").getHighestBlockYAt(-10, 10);
+                    player.teleport(new Location(Bukkit.getWorld("uhc_end"), -10 , y, 10));
+                }
+                currentChance += endChance;
+                if (RandomEgg < giveStringChance + currentChance && RandomEgg > currentChance)
+                {
+                    eggLocation.getWorld().dropItem(eggLocation, new ItemStack(Material.STRING, 2));
+                }
+                currentChance += giveStringChance;
             }
         }
     }
