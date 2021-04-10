@@ -195,7 +195,6 @@ public class uhcListeners implements Listener {
                             main.uhc_alive_players[victimId].getInventory().setArmorContents(playerArmor);
                             isDid = true;
                         }
-                        Bukkit.broadcastMessage(main.prefix+main.uhc_alive_players[victimId].getDisplayName()+" vient d'échanger son stuff avec "+player.getDisplayName());
                     }
                 }
                 currentChance += switchInventoryChance;
@@ -207,8 +206,9 @@ public class uhcListeners implements Listener {
                 currentChance += clearInventory;
                 if (RandomEgg < mlgChance + currentChance && RandomEgg > currentChance)
                 {
+                    player.getInventory().addItem(new ItemStack(Material.WATER_BUCKET));
                     int y = Bukkit.getWorld("uhc").getHighestBlockYAt(player.getLocation());
-                    player.teleport(new Location(player.getLocation().getWorld(), player.getLocation().getX(),y + 20, player.getLocation().getZ()));
+                    player.teleport(new Location(player.getLocation().getWorld(), player.getLocation().getX(),y + 50, player.getLocation().getZ()));
                     Bukkit.broadcastMessage(main.prefix+player.getDisplayName()+" tente un MLG");
                 }
                 currentChance += mlgChance;
@@ -235,7 +235,6 @@ public class uhcListeners implements Listener {
                             main.uhc_alive_players[victimId].teleport(playerLoc);
                             isDid = true;
                         }
-                        Bukkit.broadcastMessage(main.prefix+main.uhc_alive_players[victimId].getDisplayName()+" vient d'échanger de position avec "+player.getDisplayName());
                     }
                 }
                 currentChance += switchLocationChance;
