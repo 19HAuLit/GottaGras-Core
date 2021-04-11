@@ -76,7 +76,7 @@ public class uhcListeners implements Listener {
                 double revealCoordChance = 0.02;
                 double switchInventoryChance = 0.05;
                 double clearInventory = 0.001;
-                double mlgChance = 0.05;
+                double mlgChance = 0.001;
                 double dropEnchantChance = 0.05;
                 double switchLocationChance = 0.05;
                 double endChance = 0.001;
